@@ -4,13 +4,19 @@
 
 searchPlacement(C, P) :-
     placement(C, P),
-    forall(node(N,_,_,_), valid(N, P)).
+    forall(node(N,_,_,_), validPlacement(N, P)).
 
-valid(N, P) :-
+validPlacement(N, P) :-
     node(N, Op, HCaps, TCaps),
     findall(HReqs, member(p(service(C, HReqs, TReqs), node(N, _, _, _)), P), L),
     sum_list(L, R),
     R =< HCaps.
+
+flowSupport(S1, N, LReq, BReq, P) :-
+    member(p(service(C, HReqs, TReqs), node(N, _, _, _)), P), 
+    link2(M, N, L, B),
+    L =< LReq, 
+    B >= BReq.
 
 placement([], []).
 placement([C|Cs], [p(service(C, HReqs, TReqs), node(N, Op, HCaps, TCaps))|Goal]) :-
@@ -18,9 +24,19 @@ placement([C|Cs], [p(service(C, HReqs, TReqs), node(N, Op, HCaps, TCaps))|Goal])
     service(C, HReqs, TReqs),
     forall(member(T, TReqs), member(T, TCaps)), 
     HCaps - HReqs >= 0,
-    placement(Cs, Goal).
+    placement(Cs, Goal),
+    member(p(service(S1, _, _), node(M, _, _, _)), Goal),
+    forall(flow(S1, S, LReq, BReq), flowSupport(S1, N, LReq, BReq, P)),
+    forall(flow(S, S1, LReq, BReq), flowSupport(S, N, LReq, BReq, P)).
 
-query(searchPlacement([s1,s2], P)).
+flowSupport(S1, N, LReq, BReq, P) :-
+    member(p(S1,M), P), 
+    link2(M, N, L, B),
+    L =< LReq, 
+    B >= BReq.
+
+
+query(searchPlacement([s1, s2, s3], P)).
 
 
 % depth-first search by means of backtracking
