@@ -2,14 +2,35 @@
 %:- use_module('helpers.py').
 
 
+searchPlacement(C, P) :-
+    placement(C, P),
+    forall(node(N,_,_,_), valid(N, P)).
+
+valid(N, P) :-
+    node(N, Op, HCaps, TCaps),
+    findall(HReqs, member(p(service(C, HReqs, TReqs), node(N, _, _, _)), P), L),
+    sum_list(L, R),
+    R =< HCaps.
+
 placement([], []).
-placement([C|Cs], [p(C, N)|Goal]) :-
-    node(N, Op, HCaps, T),
+placement([C|Cs], [p(service(C, HReqs, TReqs), node(N, Op, HCaps, TCaps))|Goal]) :-
+    node(N, Op, HCaps, TCaps),
     service(C, HReqs, TReqs),
+    forall(member(T, TReqs), member(T, TCaps)), 
     HCaps - HReqs >= 0,
     placement(Cs, Goal).
 
-query(placement([s1], P)).
+query(searchPlacement([s1,s2], P)).
+
+
+% depth-first search by means of backtracking
+
+% search_bt(Goal,Goal):-
+%    goal(Goal).
+
+% search_bt(Current,Goal):-
+%    arc(Current,Child),
+%    search_bt(Child,Goal).
 
 
 link(X, X, 0, 10000). %
@@ -26,7 +47,7 @@ link2(X, Y, L, B) :-
 chain(c1, [s1, s2]).
 
 service(s1, 5, [thing1]).
-service(s2, 3, []).
+service(s2, 4, []).
 service(s3, 3, []).
 flow(s1, s2, 30, 4).
 flow(s2, s3, 100, 2).
