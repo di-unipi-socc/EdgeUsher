@@ -19,16 +19,6 @@ placement2([C|Cs], [p(C,N)|Ps], [a(N, HReqs)|As], B) :-
 query(placement2([s1, s2, s3], P, A, B)).
 
 
-% depth-first search by means of backtracking
-
-% search_bt(Goal,Goal):-
-%    goal(Goal).
-
-% search_bt(Current,Goal):-
-%    arc(Current,Child),
-%    search_bt(Child,Goal).
-
-
 link2(X, X, 0, 10000). %
 link2(X, Y, L, B) :-
     link(X, Z, Lxz, Bxz),
