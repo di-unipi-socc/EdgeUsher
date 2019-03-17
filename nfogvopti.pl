@@ -16,34 +16,39 @@ placement2([C|Cs], [p(C,N)|Ps], [a(N, HReqs)|As], B) :-
     latencySupport(C, N, Ps),
     enoughHardware(N, HReqs, HCaps, As).
 
-    %forall(flow(S1, S, LReq, BReq), flowSupport(S1, N, LReq, BReq, Ps)).
-    %forall(flow(S, S1, LReq, BReq), flowSupport(S, N, LReq, BReq, Ps)).
+
 
 latencySupport(C, N, P) :-
-    findall( l( p(C1, M), link2(N, M, L, B)), (flow(C, C1, LReq, BReq), member(p(C1,M), P), link2(N, M, L, B)) , L),
+    findall( l( p(C1, M), link2(N, M, L, B, Path)), (flow(C, C1, LReq, BReq), member(p(C1,M), P), link2(N, M, L, B, Path)) , L),
     writenl(L).
     %forall( member( l(p(C1,M), LReq ), L ), ), 
-   
 
-flowSupport(S1, N, LReq, BReq, P) :-
-    writenl("HEREEEE"),
-    findall(p(S1,M), member(p(S1, M), P), T), 
-    writenl(T),
-    link2(M, N, L, B),
-    L =< LReq, 
-    B >= BReq.
-    %TODO: Enough Bandwidth :)
-
-query(placement2([s1, s2, s3], P, A, B)).
+%query(placement2([s1, s2, s3], P, A, B)).
 
 
-link2(X, X, 0, 10000, []). %
-link2(X, Y, L, B, [p(X,Z)|Path]) :-
-    link(X, Z, Lxz, Bxz),
-    link2(Z, Y, Lzy, Bzy),
-    L is Lxz + Lzy,
-    B is min(Bxz, Bzy).
 
+
+link(X, X, 0, 10000). 
+
+link2(X, Y, Lat, Bw, Visited, [Y | Visited]) :-
+    link(X, Y, Lat, Bw).
+
+link2(X, Y, Lat, Bw, Visited, Path) :-
+    link(X, Z, LatXZ, BwXZ),
+    X \== Y,
+    Z \== X,
+    Z \== Y,
+    \+ member(Z, Visited),
+    link2(Z, Y, LatZY, BwZY, [Z|Visited], Path),
+    Lat is LatXZ + LatZY,
+    Bw is min(BwXZ, BwZY).
+
+path(X, Y, P, Lat, Bw) :-
+    link2(X, Y, Lat, Bw, [X], Q),
+    reverse(Q,P).
+
+
+query(path(n, cloud, X, U, P)).
 
 %%%% calls
 
