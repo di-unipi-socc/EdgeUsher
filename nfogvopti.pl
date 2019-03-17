@@ -2,10 +2,6 @@
 %:- use_module('helpers.py').
 
 
-enoughHardware(N, HReqs, HCaps, A) :-
-    findall(HAlloc, member(a(N, HAlloc), A), L),
-    sum_list(L, R),
-    HCaps - R >= HReqs.
 
 placement2([], [], [], []).
 placement2([C|Cs], [p(C,N)|Ps], [a(N, HReqs)|As], B) :-
@@ -17,6 +13,11 @@ placement2([C|Cs], [p(C,N)|Ps], [a(N, HReqs)|As], B) :-
     enoughHardware(N, HReqs, HCaps, As).
 
 
+enoughHardware(N, HReqs, HCaps, A) :-
+    findall(HAlloc, member(a(N, HAlloc), A), L),
+    sum_list(L, R),
+    HCaps - R >= HReqs.
+
 
 latencySupport(C, N, P) :-
     findall( l( p(C1, M), link2(N, M, L, B, Path)), (flow(C, C1, LReq, BReq), member(p(C1,M), P), link2(N, M, L, B, Path)) , L),
@@ -26,7 +27,9 @@ latencySupport(C, N, P) :-
 %query(placement2([s1, s2, s3], P, A, B)).
 
 
-
+path(X, Y, P, Lat, Bw) :-
+    link2(X, Y, Lat, Bw, [X], Q),
+    reverse(Q,P).
 
 link(X, X, 0, 10000). 
 
@@ -43,9 +46,6 @@ link2(X, Y, Lat, Bw, Visited, Path) :-
     Lat is LatXZ + LatZY,
     Bw is min(BwXZ, BwZY).
 
-path(X, Y, P, Lat, Bw) :-
-    link2(X, Y, Lat, Bw, [X], Q),
-    reverse(Q,P).
 
 
 query(path(n, cloud, X, U, P)).
