@@ -13,6 +13,7 @@ def createNetwork(N, p, Ops, Things, seed = 0):
                         op=node['operator'],
                         resources=node['resources'],
                         things=node['things'] )
+    
     for link in links:
         a = link['a']
         b = link['b']
@@ -20,9 +21,7 @@ def createNetwork(N, p, Ops, Things, seed = 0):
                     lat=link['lat'],
                     bw=link['bw'])
     
-    print(G.nodes().data())
-    print(G.edges().data())
-    nx.draw(G, with_labels=True, arrowstyle='<->', arrowsize=10, node_color='skyblue', alpha = 0.8, node_size=1000, linewidths=0.5, width=0.5  )
+    nx.draw(G, with_labels=True, arrowstyle='<->', arrowsize=9, font_size= 10, node_color='skyblue', alpha = 0.8, linewidths=0.5, width=0.5  )
     plt.show()
     return nodes, links, G
 
@@ -80,7 +79,7 @@ def declareLink(link):
     return result.replace("'", "")
 
 
-N = 5
+N = 10
 p = 1/N
 
 nodes, links, G = createNetwork(N, p, ['OpA', 'OpB'], ['t1', 't2', 't3', 't4', 't5'])
@@ -91,11 +90,6 @@ for node in nodes:
 for link in links:
     print(declareLink(link))
 
-def read_graph(file):
-    f = open(file, 'r')
-    for line in f:
-        print(line)
 
-#read_graph('./randomgenerators/rg.pl')
-        
+    
 # https://dtai.cs.kuleuven.be/problog/editor.html#task=prob&hash=4107b9b0d715dcdefd5054fc17b8f744
