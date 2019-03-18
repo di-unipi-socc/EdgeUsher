@@ -10,12 +10,18 @@ def createNetwork(N, p, Ops, Things, seed = 0):
 def createLinks(N,p, nodes):
     links = []
     for i in range(N):
-        for j in range(1,N):
+        for j in range(i,N):
             toss = rnd.random()
             if toss > p:
                 link = {}
                 link['a'] = nodes[i]['name']
                 link['b'] = nodes[j]['name']
+                link['lat'] = rnd.randint(1,150)
+                link['bw'] = rnd.randint(1,50)
+                links.append(link)
+                link = {}
+                link['a'] = nodes[j]['name']
+                link['b'] = nodes[i]['name']
                 link['lat'] = rnd.randint(1,150)
                 link['bw'] = rnd.randint(1,50)
                 links.append(link)
@@ -55,8 +61,10 @@ def declareLink(link):
     return result.replace("'", "")
 
 
+N = 10
+p = 1/N
 
-nodes, links = createNetwork(10, 0.7, ['OpA', 'OpB'], ['t1', 't2', 't3', 't4', 't5'])
+nodes, links = createNetwork(N, p, ['OpA', 'OpB'], ['t1', 't2', 't3', 't4', 't5'])
 
 for node in nodes:
     print(declareNode(node))
@@ -67,4 +75,4 @@ for link in links:
 
 
         
-    
+https://dtai.cs.kuleuven.be/problog/editor.html#task=prob&hash=4107b9b0d715dcdefd5054fc17b8f744
