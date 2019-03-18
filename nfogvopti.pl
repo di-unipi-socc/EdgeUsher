@@ -35,7 +35,6 @@ link(X, X, 0, 10000).
 
 link2(X, Y, Lat, Bw, Visited, [Y | Visited]) :-
     link(X, Y, Lat, Bw).
-
 link2(X, Y, Lat, Bw, Visited, Path) :-
     link(X, Z, LatXZ, BwXZ),
     X \== Y,
