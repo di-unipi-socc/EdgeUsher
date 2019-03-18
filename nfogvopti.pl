@@ -47,7 +47,7 @@ link2(X, Y, Lat, Bw, Visited, Path) :-
 
 
 
-query(path(n, cloud, X, U, P)).
+query(path(edge0, A, X, U, P)).
 
 %%%% calls
 
@@ -60,14 +60,6 @@ service(s3, 3, []).
 flow(s1, s2, 300, 4).
 flow(s2, s3, 100, 2).
 
-node(n, opA, 8, [thing1]).
-node(m, opB, 8, [thing2]).
-node(cloud, opC, 100000, []).
-
-link(n, m, 10, 12).
-link(m, n, 10, 12).
-link(m, cloud, 60, 8).
-link(cloud, m, 90, 8).
 
 
 %%%%%%%%%
