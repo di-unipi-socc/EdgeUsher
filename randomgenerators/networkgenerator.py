@@ -22,7 +22,7 @@ def createNetwork(N, p, Ops, Things, seed = 0):
     
     print(G.nodes().data())
     print(G.edges().data())
-    nx.draw_networkx(G, with_labels=True)
+    nx.draw(G, with_labels=True, arrowstyle='<->', arrowsize=10, node_color='skyblue', alpha = 0.8, node_size=1000, linewidths=0.5, width=0.5  )
     plt.show()
     return nodes, links, G
 
