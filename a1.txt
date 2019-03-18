@@ -1,0 +1,46 @@
+:- use_module(library(lists)).
+
+%determina possibili placement verificando vincoli di Things e di HW (cumulativi) sui nodi
+
+query(findPlacement(P)).
+
+findPlacement(Placement) :-
+    findall(s(X,Y,W),service(X,Y,W),Services),
+    place(Services,Placement,[]).
+
+place([],[],_).
+place([s(C,HReqs,TReqs)|Cs],[on(C,X)|Ps],Alloc) :-
+	place1(s(C,HReqs,TReqs),X,Alloc),
+	place(Cs,Ps,[(X,HReqs)|Alloc]).
+
+place1(s(C,HReqs,TReqs),X,Alloc) :-
+	node(X,_,HCaps,TCaps),
+	subset(TReqs,TCaps),
+	sumAllocated(X,Alloc,TotAllocX),
+	UpdatedHCaps is HCaps-TotAllocX,
+	HReqs < UpdatedHCaps.
+
+subset([],_).
+subset([R|Rs],TCaps) :-
+	member(R,TCaps),
+	subset(Rs,TCaps).
+	
+sumAllocated(X,[],0).
+sumAllocated(X,[(X,K)|Ls],NewS) :-
+	sumAllocated(X,Ls,S),
+	NewS is S+K.
+sumAllocated(X,[(Y,K)|Ls],S) :-
+   	X \== Y,
+	sumAllocated(X,Ls,S).
+
+% services
+service(s1, 3, [thing1]).
+service(s2, 4, [thing2]).
+service(s3, 7, []).
+
+% infrastructure/nodes
+node(fog1, opA, 7, [thing1]).
+node(fog2, opB, 12, [thing2]).
+node(cloud1, opC, 100000, []).
+
+

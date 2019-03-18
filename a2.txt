@@ -1,0 +1,109 @@
+:- use_module(library(lists)).
+
+query(linked(fog1,fog2,L,B)).
+query(linked(fog1,cloud1,L,B)).
+
+%query(findPlacement(P)).
+
+findPlacement(Placement) :-
+    findall(s(X,Y,W),service(X,Y,W),Services),
+    place(Services,Placement,[]),
+    checkFlowsReqs(Placement).
+
+place([],[],_).
+place([s(C,HReqs,TReqs)|Cs],[on(C,X)|Ps],Alloc) :-
+	place1(s(C,HReqs,TReqs),X,Alloc),
+	place(Cs,Ps,[(X,HReqs)|Alloc]).
+
+place1(s(C,HReqs,TReqs),X,Alloc) :-
+	node(X,_,HCaps,TCaps),
+	subset(TReqs,TCaps),
+	sumAllocated(X,Alloc,TotAllocX),
+	UpdatedHCaps is HCaps-TotAllocX,
+	HReqs < UpdatedHCaps.
+
+subset([],_).
+subset([R|Rs],TCaps) :-
+	member(R,TCaps),
+	subset(Rs,TCaps).
+	
+sumAllocated(X,[],0).
+sumAllocated(X,[(X,K)|Ls],NewS) :-
+	sumAllocated(X,Ls,S),
+	NewS is S+K.
+sumAllocated(X,[(Y,K)|Ls],S) :-
+   	X \== Y,
+	sumAllocated(X,Ls,S).
+
+% services
+service(s1, 3, [thing1]).
+service(s2, 4, [thing2]).
+service(s3, 7, []).
+
+% infrastructure/nodes
+node(fog1, opA, 7, [thing1]).
+node(fog2, opB, 12, [thing2]).
+node(cloud1, opC, 100000, []).
+
+flow(s1, s2, 70, 4).
+flow(s2, s3, 59, 2).
+
+link(fog1, fog2, 11, 12).
+link(fog2, cloud1, 60, 8).
+link(fog1, cloud1, 90, 8).
+%link(fog2,fog1,3,3).
+%link(cloud1,fog1,4,4).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+checkFlowsReqs(Placement) :-
+    findall(f(X,Y,L,B),flow(X,Y,L,B),Flows),
+    checkFlows(Flows,Placement).
+
+checkFlows([],_).
+checkFlows([f(S1,S2,L,B)|Fs],P) :-
+    member(on(S1,N),P),
+    member(on(S2,N),P),
+    checkFlows(Fs,P).
+checkFlows([f(S1,S2,L,B)|Fs],P) :-
+    member(on(S1,N1),P),
+    member(on(S2,N2),P),
+    N1 \== N2,
+    findall(ld(Li,Bi),linked(N1,N2,Li,Bi),[W|Ws]), 
+	% findall above fails if no linked found
+    checkEach(L,B,[W|Ws]),
+    checkFlows(Fs,P).
+
+checkEach(_,_,[]).
+checkEach(L,B,[ld(Li,Bi)|Ls]) :-
+    L > Li,
+    B < Bi,
+    checkEach(L,B,Ls).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%linked ***da rivedere** funziona con la semplice topologia
+% link(fog1, fog2, 11, 12).
+% link(fog2, cloud1, 60, 8).
+% link(fog1, cloud1, 90, 8).
+%ma già aggiungendo 
+% link(cloud1,fog1,4,4).
+% il FindPlacement prima NON termina!
+
+linked(X,Y,L,B):-
+	link2(X,Y,L,B,[X],Q),
+	reverse(Q, Path).
+
+link2(X, Y, Lat, Bw, Visited, [Y | Visited]) :-
+    link(X, Y, Lat, Bw).
+link2(X, Y, Lat, Bw, Visited, Path) :-
+    link(X, Z, LatXZ, BwXZ),
+    Z \== Y,
+    \+ member(Z, Visited),
+    link2(Z, Y, LatZY, BwZY, [Z|Visited], Path),
+    Lat is LatXZ + LatZY,
+    Bw is min(BwXZ, BwZY).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   
+
+
+
+
