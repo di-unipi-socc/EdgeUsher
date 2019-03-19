@@ -23,6 +23,10 @@ def createNetwork(N, p, Ops, Things, seed = 0):
     
     nx.draw(G, with_labels=True, arrowstyle='<->', arrowsize=9, font_size= 10, node_color='skyblue', alpha = 0.8, linewidths=0.5, width=0.5  )
     plt.show()
+
+    for x in nx.all_simple_paths(G, 'edge2', 'edge20', cutoff=None):
+        print(x)
+
     return nodes, links, G
 
 def createLinks(N, p, nodes):
@@ -71,7 +75,7 @@ def createNodes(N, Ops, Things):
 
 
 def declareNode(node):
-    result = 'node({}, {}, {}, {}).'.format(node['name'], node['resources'], node['operator'], node['things'])
+    result = 'node({}, {}, {}, {}).'.format(node['name'], node['operator'], node['resources'], node['things'])
     return result.replace("'", "")
 
 def declareLink(link):
@@ -79,8 +83,8 @@ def declareLink(link):
     return result.replace("'", "")
 
 
-N = 10
-p = 1/N
+N = 30
+p = 0.9
 
 nodes, links, G = createNetwork(N, p, ['OpA', 'OpB'], ['t1', 't2', 't3', 't4', 't5'])
 

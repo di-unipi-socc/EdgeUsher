@@ -40,7 +40,7 @@ service(s3, 3, []).
 % infrastructure/nodes
 node(fog1, opA, 8, [thing1]).
 node(fog2, opB, 8, [thing2]).
-node(cloud1, opC, 100000, []).
+node(cloud1, opC, 100000, [] ).
     link(fog1, fog2, 11, 12).
     link(fog2, cloud1, 58, 8).
     link(fog1, cloud1, 90, 8).
@@ -52,13 +52,16 @@ node(cloud1, opC, 100000, []).
 linked(X,Y,L,B):-
 	link2(X,Y,L,B,[X],Q),
 	reverse(Q, Path).
-link2(X, Y, Lat, Bw, Visited, [Y | Visited]) :-
+
+link2(X, Y, Lat, Bw, Visited, [Y|Visited]) :-
     link(X, Y, Lat, Bw).
 
 link2(X, Y, Lat, Bw, Visited, Path) :-
     link(X, Z, LatXZ, BwXZ),
-   Z \== Y,
-     \+ member(Z, Visited),
+    X \== Z,
+    Z \== Y,
+    X \== Y,
+    \+ member(Z, Visited),
     link2(Z, Y, LatZY, BwZY, [Z|Visited], Path),
     Lat is LatXZ + LatZY,
     Bw is min(BwXZ, BwZY).
@@ -76,6 +79,8 @@ checkFlows([f(S1,S2,L,B)|Fs],P) :-
 checkFlows([f(S1,S2,L,B)|Fs],P) :-
     member(on(S1,N1),P),
     member(on(S2,N2),P),
+    writenl(N1,N2),
+    writenl(linked(N1,N2,Li,Bi)),
     findall(ld(Li,Bi),linked(N1,N2,Li,Bi),[W|Ws]), %fails if no linked found
     checkEach(L,B,[W|Ws]),
     checkFlows(Fs,P).
@@ -87,5 +92,5 @@ checkEach(L,B,[ld(Li,Bi)|Ls]) :-
     checkEach(L,B,Ls).
 
 % query
-%query(place(P,N)).
-query(linked(X,Y,L,B)).
+ %query(place(P,N)).
+query(linked(fog1,cloud1,L,B)).
