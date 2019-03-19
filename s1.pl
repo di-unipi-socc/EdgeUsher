@@ -4,15 +4,21 @@ place(C, P, L) :-
     chain(C, Services),
     placeServices(Services, P, []),
     findall(f(N, M, LReq, BReq), (flow(A,B,LReq,BReq), member(p(A,N),P), member(p(B,M), P), M\==N), Flows),
-    placeFlows(Flows, P, []).
+    placeFlows(Flows, P, L).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %% Placement of Flows
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-placeFlows([F|Fs], P, Alloc).
-    %flow(A,B,LReq,BReq).
+placeFlows([], P, Alloc).
+placeFlows([f(N,M,LReq,BReq)|Fs], P, Alloc):-
+    writenl(Alloc),
+    findpath(N,M,LReq,BReq,Alloc),
+    placeFlows(Fs, P, Alloc).
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Paths
@@ -24,7 +30,8 @@ placeFlows([F|Fs], P, Alloc).
 % LReq, BReq latenza e banda richiesti sul percorso,
 % Flow taccuino per ricordare i flussi mappati su un certo link.
 
-findpath(X,Y,Path,L,B,LReq,BReq,Flow) :-
+%findpath(X,Y,Path,L,B,LReq,BReq,Flow) :-
+findpath(X,Y,LReq,BReq,Flow) :-
     path(X,Y,[X],Q,L,B,LReq,BReq,Flow,4), %%% arrives at depth 4 
     reverse(Q,Path),
     X \== Y.
@@ -47,7 +54,7 @@ path(X,Y,Visited,Path,L,B,LReq,BReq,[f(X,Y,BReq)|Flow],D) :-
     B >= BReq.
 
 
-query(findpath(n,p,Path,L,B,110,1,Flow)).
+query(findpath(m,n,15,1,Flow)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,20 +80,21 @@ chain(chain1, [a,b,c]).
 service(a, 5, [t1]).
 service(b, 3, []).
 service(c, 1, []).
+service(d, 1, [t2]).
 
-flow(a,b,15,2).
-flow(b,c,70,8).
+flow(a,b,15,1).
+flow(b,c,10,1).
 
-node(n, op, 5, []).
+node(n, op, 5, [t2]).
 node(m, op, 8, [t1]).
 node(p, op, 1000, []).
 
-link(n,m, 10, 5).
-link(n,m, 10, 9).
-link(m,p, 100, 50).
-link(p,m, 100, 60).
+link(n,m, 1, 1).
+link(m,n, 1, 1).
+link(m,p, 1, 50).
+link(p,m, 1, 60).
 
-query(place(C, P,L)).
+query(place(C,P,L)).
 
 
 %%%%%%%%%
