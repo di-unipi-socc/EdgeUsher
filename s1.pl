@@ -4,18 +4,23 @@ place(C, P, L) :-
     chain(C, Services),
     placeServices(Services, P, []),
     findall(f(N, M, LReq, BReq), (flow(A,B,LReq,BReq), member(p(A,N),P), member(p(B,M), P), M\==N), Flows),
-    placeFlows(Flows, P, L).
+    placeFlows(Flows, P, L),
+    checkFlows(Flows,L).
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %% Placement of Flows
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-placeFlows([], P, Alloc).
-placeFlows([f(N,M,LReq,BReq)|Fs], P, Alloc):-
-    writenl(Alloc),
-    findpath(N,M,LReq,BReq,Alloc),
+
+
+placeFlows([], P, []).
+placeFlows([f(N,M,LReq,BReq)|Fs], P, [A1|Alloc]):-
+    findpath(N,M,LReq,BReq,A1),
     placeFlows(Fs, P, Alloc).
+
 
 
 
@@ -41,7 +46,7 @@ path(X,Y,P,[Y|P],L,B,LReq,BReq,[f(X,Y,BReq)],D) :-
     link(X, Y, L, B),
     L =< LReq,
     B >= BReq.
-path(X,Y,Visited,Path,L,B,LReq,BReq,[f(X,Y,BReq)|Flow],D) :-
+path(X,Y,Visited,Path,L,B,LReq,BReq,[f(X,Z,BReq)|Flow],D) :-
     D > 0,
     link(X, Z, Lxz, Bxz),           
     Z \== Y,
@@ -54,7 +59,7 @@ path(X,Y,Visited,Path,L,B,LReq,BReq,[f(X,Y,BReq)|Flow],D) :-
     B >= BReq.
 
 
-query(findpath(m,n,15,1,Flow)).
+query(findpath(m,v,15,1,Flow)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -71,28 +76,28 @@ placeServices([S|Ss], [p(S,N)|P], Alloc) :-
 checkHardware(N, HCaps, Alloc) :-
     findall(HAll, member(a(N,HAll), Alloc), H),
     sum_list(H, Sum),
-    writenl(Sum),
     Sum =< HCaps.
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 chain(chain1, [a,b,c]).
-service(a, 5, [t1]).
-service(b, 3, []).
-service(c, 1, []).
-service(d, 1, [t2]).
+service(a, 10, [t1]).
+service(b, 5, []).
+service(c, 5, []).
+
 
 flow(a,b,15,1).
-flow(b,c,10,1).
+flow(a,c,15,1).
 
-node(n, op, 5, [t2]).
-node(m, op, 8, [t1]).
-node(p, op, 1000, []).
 
-link(n,m, 1, 1).
+node(n, op, 10, [t2]).
+node(m, op, 10, [t1]).
+
+
+link(n,m, 1, 2).
 link(m,n, 1, 1).
-link(m,p, 1, 50).
-link(p,m, 1, 60).
+link(v,n, 1, 1).
+link(n,v, 1, 1).
 
 query(place(C,P,L)).
 
@@ -102,7 +107,3 @@ query(place(C,P,L)).
 %%%%%%%%%
 
 forall(G, C) :- not((G, not(C))).
-
-del(X, [X|L], L).
-del(X, [Y|L], [Y|L1]) :-
-    del(X, L, L1).
