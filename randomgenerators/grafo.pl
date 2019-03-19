@@ -252,3 +252,15 @@ link(edge26, edge28, 23, 15).
 link(edge28, edge26, 118, 20).
 link(edge27, edge28, 96, 19).
 link(edge28, edge27, 53, 5).
+
+% infrastructure/nodes
+node(fog1, opA, 7, [thing1]).
+node(fog2, opB, 12, [thing2]).
+node(cloud1, opC, 100000, []).
+
+link(fog1, fog2, 11, 12).
+    %link(fog1, fog2, 10, 13).
+link(fog2, cloud1, 58, 8).
+    %link(fog2, cloud1, 57, 9).
+link(fog1, cloud1, 90, 8).
+

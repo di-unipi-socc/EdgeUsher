@@ -1,0 +1,17 @@
+path(X, Y, P, [Y|P], L, B, LReq, BReq, [l(X,Y,BReq)] ) :- 
+	writenl([l(X,Y,BReq)]),
+	link(X, Y, L, B),
+	LReq >= L,
+	BReq =< B.
+path(X, Y, Visited, Path, L, B, LReq, BReq, [l(X,Z,BReq)|Flow]) :-
+      link(X, Z, Lxz, Bxz),           
+      Z \== Y,
+      \+ member(Z,Visited),
+      path(Z,Y,[Z|Visited],Path, Lzy, Bzy, LReq, BReq, Flow),
+	  writenl([l(X,Z,BReq)|Flow]),
+      L is Lxz + Lzy,
+      B is min(Bxz, Bzy),
+	  LReq >= L,
+	  BReq =< B. 
+
+query(findPaths(cloud14,edge2,Path, L, B, 100, 1, Res)).
