@@ -92,23 +92,33 @@ findPaths([nf(Nx,Ny,L,B)|NFs],Bag,Ps,NewPs) :-
 
 
 % services
-service(s1, 3, [thing1]).
-service(s2, 4, [thing2]).
+service(s1, 3, [t3]).
+service(s2, 4, [t5]).
 service(s3, 7, []).
 flow(s1, s3, 100, 2).
-flow(s1, s2, 70, 4).
-flow(s2, s3, 59, 1).
+flow(s1, s2, 700, 4).
+flow(s2, s3, 590, 1).
 
-% infrastructure/nodes
-node(fog1, opA, 8, [thing1]).
-node(fog2, opB, 12, [thing2]).
-node(cloud1, opC, 1, []).
-node(cloud2, opD, 100000, []).
-
-link(fog1, fog2, 11, 12).
-link(fog2, cloud1, 55, 8).
-link(cloud1, fog1, 90, 8).
-link(cloud1, cloud2, 1, 10).
-%link(cloud2, fog, 1, 10).
 
    
+node(cloud0, OpB, 10000, []).
+node(edge1, OpB, 48, [t5, t4]).
+node(edge2, OpB, 8, []).
+node(edge3, OpB, 5, [t3]).
+node(edge4, OpB, 6, []).
+link(cloud0, edge1, 147, 40).
+link(edge1, cloud0, 132, 28).
+link(cloud0, edge3, 26, 39).
+link(edge3, cloud0, 99, 43).
+link(cloud0, edge4, 84, 34).
+link(edge4, cloud0, 50, 10).
+link(edge1, edge3, 143, 50).
+link(edge3, edge1, 95, 16).
+link(edge1, edge4, 53, 16).
+link(edge4, edge1, 44, 6).
+link(edge2, edge3, 43, 7).
+link(edge3, edge2, 62, 45).
+link(edge2, edge4, 46, 31).
+link(edge4, edge2, 12, 9).
+link(edge3, edge4, 2, 4).
+link(edge4, edge3, 18, 26).
