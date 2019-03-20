@@ -84,16 +84,20 @@ def declareLink(link):
     return result.replace("'", "")
 
 
-N = 50
-p = 0.95
+N = 500
+p = 0.98
 
 nodes, links, G = createNetwork(N, p, ['OpA', 'OpB'], ['t1', 't2', 't3', 't4', 't5'])
 
+f= open("guru99.txt","w+")
+
 for node in nodes:
-    print(declareNode(node))
+    f.write(declareNode(node)+"\n")
 
 for link in links:
-    print(declareLink(link))
+    f.write(declareLink(link)+"\n")
+
+f.close() 
 
 
     
