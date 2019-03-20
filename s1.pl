@@ -108,7 +108,7 @@ checkHardware(N, HCaps, Alloc) :-
 chain(chain1, [a,b,c]).
 service(a, 10, [t1]).
 service(b, 2, []).
-service(c, 3, []).
+service(c, 30, []).
 
 
 flow(a,b,15,1).
