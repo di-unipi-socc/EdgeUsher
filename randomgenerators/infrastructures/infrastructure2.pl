@@ -1,113 +1,9 @@
-:- use_module(library(lists)).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Queries
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%query(sumflows(m,n,[f(m,n,1), f(m,n,1)],Sum)).
-%query(findpath(m,v,15,1,Flow)).
-query(place(C,P,L)).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Place Function
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-place(C, P, L) :-
-    chain(C, Services),
-    placeServices(Services, P, []),
-    findall(f(N, M, LReq, BReq), (flow(A,B,LReq,BReq), member(p(A,N),P), member(p(B,M), P), M\==N), Flows),
-    placeFlows(Flows, P, L).
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Placement of Flows
-%%%%%%%%%%%%%%%%%%%%%%%%%
-placeFlows([], P, []).
-placeFlows([f(N,M,LReq,BReq)|Fs], P, [A1|Alloc]):-
-    findpath(N,M,LReq,BReq,A1),
-    placeFlows(Fs, P, Alloc).
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Paths
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% X, Y nodi,
-% Visited nodi visitati,
-% Path, percorso nodi visitati,
-% L, B latenza e banda del percorso
-% LReq, BReq latenza e banda richiesti sul percorso,
-% Flow taccuino per ricordare i flussi mappati su un certo link.
-
-findpath(X,Y,LReq,BReq,Flow) :-
-    path(X,Y,[X],Q,L,B,LReq,BReq,Flow,4), %%% arrives at depth 4 
-    reverse(Q,Path),
-    X \== Y.
-
-path(X,Y,P,[Y|P],L,B,LReq,BReq,[f(X,Y,BReq)],D) :- 
-    D > 0,
-    link(X, Y, L, B),
-    L =< LReq,
-    B >= BReq.
-path(X,Y,Visited,Path,L,B,LReq,BReq,[f(X,Z,BReq)|Flow],D) :-
-    D > 0,
-    link(X, Z, Lxz, Bxz),    
-    Z \== Y,
-    \+ member(Z,Visited),
-    D1 is D - 1,
-    path(Z,Y,[Z|Visited],Path,Lzy,Bzy,LReq,BReq,Flow,D1),
-    B is min(Bxz, Bzy),
-    B >= BReq,
-    L is Lxz + Lzy,
-    L =< LReq,
-    sumflows(X,Z,Flow,Sum),     
-    B - Sum >= BReq.
-
-sumflows(X,Z,[],0).
-sumflows(X,Z,[f(A,B,BReq)],BReq):-
-    A == X,
-    B == Z.
-sumflows(X,Z,[f(A,B,BReq)],0):-
-    A \== X,
-    B \== Z.
-sumflows(X,Z,[f(A,B,BReq)|Flow],Sum):-
-    A == X,
-    B == Z,
-    sumflows(X,Z,Flow,Sum1),
-    Sum is Sum1 + BReq.
-sumflows(X,Z,[f(A,B,BReq)|Flow],Sum):-
-    A \== X,
-    B \== Z,
-    sumflows(X,Z,Flow,Sum).
-    
-%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Placement of Services
-%%%%%%%%%%%%%%%%%%%%%%%%%
-placeServices([], [], _).
-placeServices([S|Ss], [p(S,N)|P], Alloc) :-
-    service(S, HReqs, TReqs),
-    node(N, OpN, HCaps, TCaps),
-    subset(TReqs, TCaps),
-    HCaps >= HReqs,
-    checkHardware(N, HCaps, [a(N, HReqs)|Alloc]),
-    placeServices(Ss, P, [a(N, HReqs)|Alloc]).
-
-checkHardware(N, HCaps, Alloc) :-
-    findall(HAll, member(a(N,HAll), Alloc), H),
-    sum_list(H, Sum),
-    Sum =< HCaps.
-%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%
-
-chain(chain1, [a,b,c]).
-service(a, 10, [t1]).
-service(b, 2, []).
-service(c, 3, []).
-
-flow(a,b,150,1).
-flow(a,c,100,1).
+%%%% 50 nodi, 0.05 probabilità di essere connesso direttamente ad altri.
 
 node(edge0, OpA, 4, []).
 node(edge1, OpA, 4, []).
 node(edge2, OpB, 35, []).
-node(edge3, OpB, 15, [t1]).
+node(edge3, OpB, 15, []).
 node(edge4, OpA, 11, []).
 node(edge5, OpA, 33, []).
 node(edge6, OpB, 2, []).
@@ -292,10 +188,3 @@ link(edge41, cloud46, 23, 41).
 link(cloud46, edge41, 25, 9).
 link(edge41, edge47, 73, 12).
 link(edge47, edge41, 113, 39).
-
-%%%%%%%%%
-% Utils
-%%%%%%%%%
-
-forall(G, C) :- not((G, not(C))).
-

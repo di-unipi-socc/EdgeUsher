@@ -84,7 +84,7 @@ def declareLink(link):
     return result.replace("'", "")
 
 
-N = 30
+N = 50
 p = 0.95
 
 nodes, links, G = createNetwork(N, p, ['OpA', 'OpB'], ['t1', 't2', 't3', 't4', 't5'])
