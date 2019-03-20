@@ -5,12 +5,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %query(sumflows(m,n,[f(m,n,1), f(m,n,1)],Sum)).
 %query(findpath(m,v,15,1,Flow)).
-query(place(C,P,L)).
+query(place(C,P)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Place Function
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-place(C, P, L) :-
+place(C, P) :-
     chain(C, Services),
     placeServices(Services, P, []),
     findall(f(N, M, LReq, BReq), (flow(A,B,LReq,BReq), member(p(A,N),P), member(p(B,M), P), M\==N), Flows),
@@ -99,7 +99,6 @@ checkHardware(N, HCaps, Alloc) :-
 % Trust
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 trusts(X,X).
-
 trusts2(A,B) :-
     trusts(A,B).
 trusts2(A,B) :-
@@ -115,6 +114,12 @@ chain(chain1, [a,b,c]).
 service(a, 10, [t1]).
 service(b, 2, []).
 service(c, 3, []).
+
+securityRequirements(chain1, N) :-
+    physical_security(N),
+    public_key_cryptography(N),
+    authentication(N).
+
 
 flow(a,b,150,1).
 flow(a,c,100,1).
