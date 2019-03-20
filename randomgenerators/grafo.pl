@@ -1,7 +1,7 @@
 node(cloud0, OpB, 10000, []).
-node(edge1, OpB, 48, [t5, t4]).
+node(edge1, OpB, 5, [t3, t4]).
 node(edge2, OpB, 8, []).
-node(edge3, OpB, 5, [t3]).
+node(edge3, OpB, 14, [t1]).
 node(edge4, OpB, 6, []).
 link(cloud0, edge1, 147, 40).
 link(edge1, cloud0, 132, 28).
