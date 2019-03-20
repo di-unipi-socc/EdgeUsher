@@ -4,28 +4,29 @@ import matplotlib.pyplot as plt
 
 def createNetwork(N, p, Ops, Things, seed = 0):
     rnd.seed = seed
-    G = nx.DiGraph()
-    nodes = createNodes(N, Ops, Things)
-    links = createLinks(N, p, nodes)
+    G = nx.Graph()
 
-    for node in nodes:
-        G.add_node(node['name'], 
-                        op=node['operator'],
-                        resources=node['resources'],
-                        things=node['things'] )
-    
-    for link in links:
-        a = link['a']
-        b = link['b']
-        G.add_edge(a, b, 
-                    lat=link['lat'],
-                    bw=link['bw'])
+    while nx.is_empty(G) or not(nx.is_connected(G)):
+        G = nx.Graph()
+        nodes = createNodes(N, Ops, Things)
+        links = createLinks(N, p, nodes)
+
+        for node in nodes:
+            G.add_node(node['name'], 
+                            op=node['operator'],
+                            resources=node['resources'],
+                            things=node['things'] )
+        
+        for link in links:
+            a = link['a']
+            b = link['b']
+            G.add_edge(a, b, 
+                        lat=link['lat'],
+                        bw=link['bw'])
     
     nx.draw(G, with_labels=True, arrowstyle='<->', arrowsize=9, font_size= 10, node_color='skyblue', alpha = 0.8, linewidths=0.5, width=0.5  )
     plt.show()
 
-    for x in nx.all_simple_paths(G, 'edge2', 'edge20', cutoff=None):
-        print(x)
 
     return nodes, links, G
 
@@ -84,7 +85,7 @@ def declareLink(link):
 
 
 N = 30
-p = 0.9
+p = 0.95
 
 nodes, links, G = createNetwork(N, p, ['OpA', 'OpB'], ['t1', 't2', 't3', 't4', 't5'])
 

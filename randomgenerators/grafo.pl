@@ -1,3 +1,19 @@
+chain(chain1, [a,b,c]).
+service(a, 10, [t1]).
+service(b, 2, []).
+service(c, 3, []).
+flow(a,b,150,1).
+flow(a,c,100,1).
+
+node(n, op, 10, [t2]).
+node(m, op, 10, [t1]).
+node(v, op, 100, []).
+link(n,m, 1, 2).
+link(m,n, 1, 2).
+link(v,n, 50, 2).
+link(n,v, 50, 1).
+
+
 node(cloud0, OpB, 10000, []).
 node(edge1, OpB, 5, [t3, t4]).
 node(edge2, OpB, 8, []).
