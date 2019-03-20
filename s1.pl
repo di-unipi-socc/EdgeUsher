@@ -103,7 +103,6 @@ service(a, 10, [t1]).
 service(b, 2, []).
 service(c, 3, []).
 
-
 flow(a,b,150,1).
 flow(a,c,100,1).
 
@@ -203,10 +202,6 @@ link(cloud27, edge28, 98, 50).
 link(edge28, cloud27, 61, 33).
 link(edge28, edge29, 15, 29).
 link(edge29, edge28, 57, 15).
-
-
-
-
 
 %%%%%%%%%
 % Utils
