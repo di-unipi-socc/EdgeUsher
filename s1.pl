@@ -5,12 +5,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %query(sumflows(m,n,[f(m,n,1), f(m,n,1)],Sum)).
 %query(findpath(m,v,15,1,Flow)).
-query(place(C,P)).
+query(place(C,P,L)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Place Function
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-place(C, P) :-
+place(C, P,L) :-
     chain(C, Services),
     placeServices(Services, P, []),
     findall(f(N, M, LReq, BReq), (flow(A,B,LReq,BReq), member(p(A,N),P), member(p(B,M), P), M\==N), Flows),
