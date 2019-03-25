@@ -53,6 +53,7 @@ findPath(OpC, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
 path(OpC, N1, N2, Radius, VisitedNodes, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N2, Lf, Bf),
+    checkTrust(OpC, N1),
     checkTrust(OpC, N2),
     Lf =< Lr,
     Bf >= Br,
