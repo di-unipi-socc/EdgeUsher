@@ -8,7 +8,7 @@ place(Chain, Placement, ServiceRoutes) :-
     chain(OpC, Chain, Services),
     placeServices(OpC, Services, Placement),
     findall(f(S1, S2, Lr, Br), flow(S1, S2, Lr, Br), ServiceFlows),
-    placeFlows(ServiceFlows, Placement, ServiceRoutes).
+    placeFlows(OpC, ServiceFlows, Placement, ServiceRoutes).
 
 placeServices(OpC, Services, Placement) :-
     placeServices(OpC, Services, Placement, []).
@@ -34,38 +34,46 @@ checkHWReqs(HW_Reqs, N, HW_Caps, [(N1,A1)|As], [(N1,A1)|NewAs]) :-
     N \== N1,
     checkHWReqs(HW_Reqs, N, HW_Caps, As, NewAs).
 
-placeFlows(ServiceFlows, Placement, ServiceRoutes) :-
-    placeFlows(ServiceFlows, Placement, [], ServiceRoutes).
+placeFlows(OpC, ServiceFlows, Placement, ServiceRoutes) :-
+    placeFlows(OpC, ServiceFlows, Placement, [], ServiceRoutes).
 
-placeFlows([], _, ServiceRoutes, ServiceRoutes).
-placeFlows([SF|SFs], Placement, ServiceRoutes, NewServiceRoutes) :-
-    findPath(SF, Placement, ServiceRoutes, ServiceRoutes2),
-    placeFlows(SFs, Placement, ServiceRoutes2, NewServiceRoutes).
+placeFlows(OpC, [], _, ServiceRoutes, ServiceRoutes).
+placeFlows(OpC, [SF|SFs], Placement, ServiceRoutes, NewServiceRoutes) :-
+    findPath(OpC, SF, Placement, ServiceRoutes, ServiceRoutes2),
+    placeFlows(OpC, SFs, Placement, ServiceRoutes2, NewServiceRoutes).
 
-findPath(f(S1, S2, Lr, Br), Placement, ServiceRoutes, ServiceRoutes) :-
+findPath(OpC, f(S1, S2, Lr, Br), Placement, ServiceRoutes, ServiceRoutes) :-
     subset([on(S1,N),on(S2,N)], Placement).
 
-findPath(f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
+findPath(OpC, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
     subset([on(S1,N1),on(S2,N2)], Placement),
     N1 \== N2,
-    path(N1, N2, 3, [], f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes).
+    path(OpC, N1, N2, 3, [], f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes).
 
-path(N1, N2, Radius, VisitedNodes, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
+path(OpC, N1, N2, Radius, VisitedNodes, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N2, Lf, Bf),
+    checkTrust(OpC, N1, N2),
     Lf =< Lr,
     Bf >= Br,
     update(N1, N2, Bf, S1, S2, Br, ServiceRoutes, NewServiceRoutes).
 
-path(N1, N2, Radius, VisitedNodes, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
+path(OpC, N1, N2, Radius, VisitedNodes, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N3, Lf, Bf), N3 \== N2, \+ member(N3, VisitedNodes),
+    checkTrust(OpC, N1, N3),
     Lf =< Lr,
     Bf >= Br,
     update(N1, N3, Bf, S1, S2, Br, ServiceRoutes, ServiceRoutes2),
     NewRadius is Radius-1,
-    path(N3, N2, NewRadius, [N3|VisitedNodes], f(S1, S2, Lr, Br), Placement, ServiceRoutes2, NewServiceRoutes).
+    path(OpC, N3, N2, NewRadius, [N3|VisitedNodes], f(S1, S2, Lr, Br), Placement, ServiceRoutes2, NewServiceRoutes).
 
+checkTrust(OpC, N1, N2):-
+    node(N1, Op1, _, _),
+    node(N2, Op2, _, _),
+    trusts2(OpC, Op1),
+    trusts2(OpC, Op2).
+    
 update(N1, N2, _, S1, S2, Br, [], [(N1, N2, Br,[(S1,S2)])]).
 update(N1, N2, Bf, S1, S2, Br, [(N1, N2, Ba, L)|ServiceRoutes], [(N1, N2, NewBa, [(S1,S2)|L])|ServiceRoutes]) :- 
     NewBa is Ba+Br,
@@ -77,7 +85,6 @@ update(N1, N2, Bf, S1, S2, Br, [(X, Y, Ba, L)|ServiceRoutes], [(X, Y, Ba, L)|New
 
 
 trusts(X,X).
-
 trusts2(A,B) :-
     trusts(A,B).
 trusts2(A,B) :-
