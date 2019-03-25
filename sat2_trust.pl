@@ -53,7 +53,7 @@ findPath(OpC, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
 path(OpC, N1, N2, Radius, VisitedNodes, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N2, Lf, Bf),
-    checkTrust(OpC, N1, N2),
+    checkTrust(OpC, N2),
     Lf =< Lr,
     Bf >= Br,
     update(N1, N2, Bf, S1, S2, Br, ServiceRoutes, NewServiceRoutes).
@@ -61,18 +61,18 @@ path(OpC, N1, N2, Radius, VisitedNodes, f(S1, S2, Lr, Br), Placement, ServiceRou
 path(OpC, N1, N2, Radius, VisitedNodes, f(S1, S2, Lr, Br), Placement, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N3, Lf, Bf), N3 \== N2, \+ member(N3, VisitedNodes),
-    checkTrust(OpC, N1, N3),
+    checkTrust(OpC, N1),
+    checkTrust(OpC, N3),
     Lf =< Lr,
     Bf >= Br,
     update(N1, N3, Bf, S1, S2, Br, ServiceRoutes, ServiceRoutes2),
     NewRadius is Radius-1,
     path(OpC, N3, N2, NewRadius, [N3|VisitedNodes], f(S1, S2, Lr, Br), Placement, ServiceRoutes2, NewServiceRoutes).
 
-checkTrust(OpC, N1, N2):-
-    node(N1, Op1, _, _),
-    node(N2, Op2, _, _),
-    trusts2(OpC, Op1),
-    trusts2(OpC, Op2).
+checkTrust(OpC, N):-
+    node(N, OpN, _, _),
+    trusts2(OpC, OpN).
+
     
 update(N1, N2, _, S1, S2, Br, [], [(N1, N2, Br,[(S1,S2)])]).
 update(N1, N2, Bf, S1, S2, Br, [(N1, N2, Ba, L)|ServiceRoutes], [(N1, N2, NewBa, [(S1,S2)|L])|ServiceRoutes]) :- 
