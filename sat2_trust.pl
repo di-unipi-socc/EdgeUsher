@@ -92,8 +92,9 @@ trusts2(A,B) :-
     trusts(A,C),
     trusts2(C,B).
 
-.9::trusts(opC, opZ).
-.5::trusts(opZ, op).
+%.9::trusts(opC, opZ).
+%.99::trusts(opZ, op).
+trusts(opC,C).
 
 chain(opC, chain1, [a,b,c]).
 service(a, 10, [t1]).
@@ -102,8 +103,8 @@ service(c, 3, []).
 flow(a,b,150,1).
 flow(a,c,100,1).
 
-node(n, op, 10, [t2]).
 node(m, op, 10, [t1]).
+node(n, op3, 10, [t2]).
 node(v, op, 100, []).
 link(n,m, 1, 2).
 link(m,n, 1, 2).
