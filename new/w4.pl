@@ -50,14 +50,10 @@ placeFlows([SF|SFs], Placement, ServiceRoutes, NewServiceRoutes, [SFLatency|S2SL
     findPath(SF, Placement, ServiceRoutes, ServiceRoutes2, SFLatency),
     placeFlows(SFs, Placement, ServiceRoutes2, NewServiceRoutes, S2SLatencies).
 
-
-%assumo per ora che ci sia una sola maxlatency/2 p.e. maxlatency([s1,s2,s3],4).
-
 checkMaxLatencies(S2SLatencies):-
     forall(maxlatency(Chain, RequiredLatency), checkLatencies(Chain, RequiredLatency, S2SLatencies)).
 
 checkLatencies(Chain, RequiredLatency, S2SLatencies):-
-    %maxlatency(Chain, RequiredLatency), 
     computeLatency(Chain, S2SLatencies, FeaturedLatency),
     write('Chain latency computed: '), writenl(FeaturedLatency),
     FeaturedLatency =< RequiredLatency,
