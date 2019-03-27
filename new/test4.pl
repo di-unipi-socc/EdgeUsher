@@ -8,7 +8,8 @@ flow(s1,s2,2).
 flow(s2,s3,2).
 
 maxlatency([s1,s2,s3],15).
-maxlatency([s1,s2],6).
+%maxlatency([s1,s2],7).
+%maxlatency([s2,s3],7).
 
 %%%%%%%%%%%%%%%%%%%%%%
 %  n7 <-- n8 <-- n9  %
