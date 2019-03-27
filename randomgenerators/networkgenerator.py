@@ -84,12 +84,12 @@ def declareLink(link):
     return result.replace("'", "")
 
 
-N = 500
-p = 0.98
+N = 50
+p = 0.95
 
-nodes, links, G = createNetwork(N, p, ['OpA', 'OpB'], ['t1', 't2', 't3', 't4', 't5'])
+nodes, links, G = createNetwork(N, p, ['opA', 'opB'], ['t1', 't2', 't3', 't4', 't5'])
 
-f= open("guru99.txt","w+")
+f= open("50_nodes.txt","w+")
 
 for node in nodes:
     f.write(declareNode(node)+"\n")
@@ -99,6 +99,3 @@ for link in links:
 
 f.close() 
 
-
-    
-# https://dtai.cs.kuleuven.be/problog/editor.html#task=prob&hash=4107b9b0d715dcdefd5054fc17b8f744
