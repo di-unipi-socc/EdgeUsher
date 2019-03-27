@@ -1,5 +1,5 @@
 :- use_module(library(lists)).
-:- consult('test4').
+:- consult('test5').
 query(place(C,P,L)).
     
 place(Chain, Placement, ServiceRoutes) :-
@@ -15,12 +15,18 @@ placeServices(Services, Placement) :-
 
 placeServices([], [], _).
 placeServices([S|Ss], [on(S,N)|P], AllocatedHW) :-
-    service(S, HW_Reqs, T_Reqs, T_Proc),
+    service(S, HW_Reqs, T_Reqs, T_Proc, Sec_Reqs),
     node(N, OpN, HW_Caps, T_Caps),
     checkThingReqs(T_Reqs, T_Caps),
     HW_Reqs =< HW_Caps,
     checkHWReqs(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
+    checkSecReqs(Sec_Reqs, N),
     placeServices(Ss, P, NewAllocatedHW).
+
+checkSecReqs([], N).
+checkSecReqs([SR|SRs], N) :-
+    secProp(N, SR),
+    checkSecReqs(SRs, N).
 
 checkThingReqs(T_Reqs, T_Caps) :-
     subset(T_Reqs, T_Caps).
@@ -59,7 +65,7 @@ checkLatencies(Chain, RequiredLatency, S2SLatencies):-
 computeLatency([S], _, 0). %TODO: Capire se vogliamo considerare T_Proc anche per l'ultimo servizio!
 computeLatency([S1,S2|RestOfChain], S2SLatencies, FeaturedLatency) :-
     member(s2slat(S1,S2,Lf), S2SLatencies),
-    service(S1, _, _, T_Proc),
+    service(S1, _, _, T_Proc, _),
     computeLatency([S2|RestOfChain], S2SLatencies, FeaturedLatency2),
     FeaturedLatency is Lf+T_Proc+FeaturedLatency2.
 
