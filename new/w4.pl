@@ -3,25 +3,26 @@
 query(place(C,P,L)).
     
 place(Chain, Placement, ServiceRoutes) :-
-    chain(Chain, Services),
-    placeServices(Services, Placement),
+    chain(OpC, Chain, Services),
+    placeServices(OpC, Services, Placement),
     findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
     placeFlows(ServiceFlows, Placement, ServiceRoutes),
     writenl(Placement),
     writenl(ServiceRoutes).
 
-placeServices(Services, Placement) :-
-    placeServices(Services, Placement, []).
+placeServices(OpC, Services, Placement) :-
+    placeServices(OpC, Services, Placement, []).
 
-placeServices([], [], _).
-placeServices([S|Ss], [on(S,N)|P], AllocatedHW) :-
+placeServices(_, [], [], _).
+placeServices(OpC,[S|Ss], [on(S,N)|P], AllocatedHW) :-
     service(S, HW_Reqs, T_Reqs, T_Proc, Sec_Reqs),
     node(N, OpN, HW_Caps, T_Caps),
     checkThingReqs(T_Reqs, T_Caps),
     HW_Reqs =< HW_Caps,
+    trusts2(OpC, OpN),
     checkHWReqs(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
     checkSecReqs(Sec_Reqs, N),
-    placeServices(Ss, P, NewAllocatedHW).
+    placeServices(OpC, Ss, P, NewAllocatedHW).
 
 checkSecReqs([], N).
 checkSecReqs([SR|SRs], N) :-
@@ -104,9 +105,7 @@ update(N1, N2, Bf, S1, S2, Br, [(X, Y, Ba, L)|ServiceRoutes], [(X, Y, Ba, L)|New
     N2 \== Y,
     update(N1, N2, Bf, S1, S2, Br, ServiceRoutes, NewServiceRoutes).
 
-
 trusts(X,X).
-
 trusts2(A,B) :-
     trusts(A,B).
 trusts2(A,B) :-

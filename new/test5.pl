@@ -1,4 +1,7 @@
-chain(chain1, [s1,s2,s3]).
+chain(opC, chain1, [s1,s2,s3]).
+
+.5::trusts(opC, op2).
+.5::trusts(op2, op1).
 
 service(s1, 10, [t1], 5, [antitampering, audit]).
 service(s2, 10, [t2], 5, [firewall]).
@@ -22,8 +25,8 @@ maxlatency([s1,s2,s3],15).
 %%%%%%%%%%%%%%%%%%%%%%
 
 node(n1, op1, 10, [t1]).
-    .9::secProp(n1, antitampering).
-    .999::secProp(n1, audit).
+    secProp(n1, antitampering).
+    secProp(n1, audit).
 
 node(n2, op1, 9, [t1]).
 node(n3, op1, 10, [t1]).
@@ -31,7 +34,7 @@ node(n3, op1, 10, [t1]).
 node(n4, op1, 9, [t2]).
 node(n5, op1, 10, [t2]).
     secProp(n5, audit).
-    .5::secProp(n5, firewall).
+    secProp(n5, firewall).
 
 node(n6, op1, 10, [t2]).
 
