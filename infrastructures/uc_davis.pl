@@ -1,22 +1,22 @@
-node(parkingServices, op, 8, [video1], []).
+node(parkingServices, op, 2, [video1], []).
 node(firePolice, op, 16, [video2, alarm1], []).
 node(mannLab, op, 8, [video3], []).
-node(westEntry, op, 1, [], []).
+node(westEntry, op, 2, [], []).
 node(lifeSciences, op, 8, [video4], []).
-node(kleiberHall, op, 8, [video5], []).
-node(hoaglandAnnex, op, 8, [video6], []).
-node(briggsHall, op, 12, [video7], []).
+node(kleiberHall, op, 2, [video5], []).
+node(hoaglandAnnex, op, 4, [video6], []).
+node(briggsHall, op, 4, [video7], []).
 node(sciencesLectureHall, op, 8, [video8], []).
-node(sciencesLab, op, 8, [video9], []).
-node(storerHall, op, 8, [video10], []).
+node(sciencesLab, op, 4, [video9], []).
+node(storerHall, op, 2, [video10], []).
 node(hutchisonHall, op, 8, [video11], []).
-node(asmundsonHall, op, 8, [video12], []).
-node(robbinsHallAn, op, 1, [], []).
+node(asmundsonHall, op, 4, [video12], []).
+node(robbinsHallAn, op, 4, [], []).
 node(robbinsHall, op, 8, [video13], []).
-node(kerrHall, op, 8, [video14], []).
+node(kerrHall, op, 2, [video14], []).
 node(wellManHall, op, 8, [video15], []).
-node(hartHall, op, 8, [video16], []).
-node(studentCenter, op, 8, [video17], []).
+node(hartHall, op, 2, [video16], []).
+node(studentCenter, op, 16, [video17], []).
 
 link(parkingServices, westEntry, 5, 10).
 link(parkingServices, lifeSciences, 5, 10).
