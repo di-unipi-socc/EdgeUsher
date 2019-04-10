@@ -17,6 +17,16 @@ node(kerrHall, op, 2, [video14], []).
 node(wellManHall, op, 8, [video15], []).
 node(hartHall, op, 2, [video16], []).
 node(studentCenter, op, 16, [video17], []).
+node(isp, ispOp, 64, [], []).
+node(cloud, cloudOp, 10000, [], []).
+
+link(isp, studentCenter, 50, 1000).
+link(studentCenter, isp, 50, 1000).
+link(isp, firePolice, 50, 1000).
+link(firePolice, isp, 50, 1000).
+link(isp, cloud, 50, 1000).
+link(cloud, isp, 50, 1000).
+
 
 link(parkingServices, westEntry, 5, 10).
 link(parkingServices, lifeSciences, 5, 10).
