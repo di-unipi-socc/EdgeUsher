@@ -1,6 +1,6 @@
 result = "chain(ucdavis_cctv, [\n "
 
-N = 1
+N = 2
 
 for i in range(1,N+1):
     result += "cctv_driver" + str(i) + ",\n"
@@ -27,6 +27,7 @@ sta_driver_sec ="[ ]).\n"
 alarm_driver_proc = ", 2, "
 alarm_driver_hw = " 0.5, "
 alarm_driver_things = "[ alarm1 ], " 
+#alarm_driver_things = "[ alarm" + str(i) + "], "
 alarm_driver_sec ="[ ]).\n"
 
 for i in range(1,N+1):
@@ -38,7 +39,8 @@ for i in range(1,N+1):
     result += "flow(feature_extr" + str(i) +", short_term_analytics" + str(i) +", 5).\n" 
     result += "flow(short_term_analytics" + str(i) +", alarm_driver" + str(i) +", .5).\n" 
     result += "flow(feature_extr" + str(i) +", video_compression, 5).\n" 
-    result += "flow(long_term_analytics" + str(i) +", short_term_analytics, 1).\n" 
+   # result += "flow(long_term_analytics" + str(i) +", short_term_analytics, 1).\n" 
+    result += "flow(long_term_analytics" +", short_term_analytics" + str(i)+ ", 1).\n"
     result += "maxLatency([cctv_driver" + str(i) + ", feature_extr" + str(i) + ", short_term_analytics" + str(i) + ", alarm_driver" + str(i) + "], 50).\n"    
 
 
