@@ -1,9 +1,10 @@
 :- use_module(library(lists)).
-:- consult('infrastructures/uc_davis').
+
     
 placement(Chain, Placement, ServiceRoutes) :-
     chain(Chain, Services),
     servicePlacement(Services, Placement),
+    writenl(Placement),
     findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
     flowPlacement(ServiceFlows, Placement, ServiceRoutes).
     
@@ -51,7 +52,6 @@ servicePath(f(S1, S2, Br), Placement, ServiceRoutes, NewServiceRoutes, s2s_lat(S
     N1 \== N2,
     path(N1, N2, 5, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes).
 
-%?? Placement inutile in path?
 path(N1, N2, Radius, _, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N2, Lf, Bf),
