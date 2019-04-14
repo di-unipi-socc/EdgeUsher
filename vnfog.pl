@@ -20,7 +20,7 @@ servicePlacement(Services, Placement) :-
 servicePlacement2([], [], _).
 servicePlacement2([S|Ss], [on(S,N)|P], AllocatedHW) :-
     service(S, _, HW_Reqs, Thing_Reqs, Sec_Reqs),
-    node(N, _, HW_Caps, Thing_Caps, Sec_Caps),
+    node(N, HW_Caps, Thing_Caps, Sec_Caps),
     thingReqsOK(Thing_Reqs, Thing_Caps),
     HW_Reqs =< HW_Caps,
     secReqsOK(S, Sec_Reqs, Sec_Caps),

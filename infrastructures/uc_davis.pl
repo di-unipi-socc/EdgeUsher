@@ -1,22 +1,22 @@
-node(parkingServices, op, 2, [video1], [ anti_tampering ]).
-node(firePolice, op, 16, [video2, alarm1], []).
-node(mannLab, op, 8, [video3], []).
-node(westEntry, op, 2, [], []).
-node(lifeSciences, op, 8, [video4], []).
-node(kleiberHall, op, 2, [video5], []).
-node(hoaglandAnnex, op, 4, [video6], []).
-node(briggsHall, op, 4, [video7], []).
-node(sciencesLectureHall, op, 8, [video8], []).
-node(sciencesLab, op, 4, [video9], []).
-node(storerHall, op, 2, [video10], []).
-node(hutchisonHall, op, 8, [video11], []).
-node(asmundsonHall, op, 4, [video12], []).
-node(robbinsHallAn, op, 4, [], []).
-node(robbinsHall, op, 8, [video13], []).
-node(kerrHall, op, 2, [video14], []).
-node(wellManHall, op, 8, [video15], []).
-node(hartHall, op, 2, [video16], []).
-node(studentCenter, op, 16, [video17], []).
+node(parkingServices, 2, [video1], [ anti_tampering ]).
+node(firePolice, 16, [video2, alarm1], []).
+node(mannLab, 8, [video3], []).
+node(westEntry, 2, [], []).
+node(lifeSciences, 8, [video4], []).
+node(kleiberHall, 2, [video5], []).
+node(hoaglandAnnex, 4, [video6], []).
+node(briggsHall, 4, [video7], []).
+node(sciencesLectureHall, 8, [video8], []).
+node(sciencesLab, 4, [video9], []).
+node(storerHall, 2, [video10], []).
+node(hutchisonHall, 8, [video11], []).
+node(asmundsonHall, 4, [video12], []).
+node(robbinsHallAn, 4, [], []).
+node(robbinsHall, 8, [video13], []).
+node(kerrHall, 2, [video14], []).
+node(wellManHall, 8, [video15], []).
+node(hartHall, 2, [video16], []).
+node(studentCenter, 16, [video17], []).
 node(isp, ispOp, 64, [], []).
 node(cloud, cloudOp, 10000, [], []).
 
@@ -133,6 +133,6 @@ node(cloud, cloudOp, 10000, [], []).
 0.95::link(studentCenter, lifeSciences, 5, 250);0.05::link(studentCenter, lifeSciences, 15, 150). %fiber
 0.95::link(studentCenter, briggsHall, 5, 250);0.05::link(studentCenter, briggsHall, 15, 150). %fiber
 0.95::link(studentCenter, sciencesLab, 5, 250);0.05::link(studentCenter, sciencesLab, 15, 150). %fiber
-0.95::link(studentCenter, storerHall, 5, 250);0.05::link(studentCenter, storerHall, 15, 150).  %fiber
+0.95::link(studentCenter, storerHall, 5, 250);0.05::link(studentCenter, storerHall, 15, 150). %fiber
 0.95::link(studentCenter, robbinsHall, 5, 250);0.05::link(studentCenter, robbinsHall, 15, 150). %fiber
 
