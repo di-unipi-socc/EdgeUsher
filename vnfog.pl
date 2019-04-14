@@ -16,8 +16,8 @@ servicePlacement2([S|Ss], [on(S,N)|P], AllocatedHW) :-
     node(N, _, HW_Caps, Thing_Caps, Sec_Caps),
     thingReqsOK(Thing_Reqs, Thing_Caps),
     HW_Reqs =< HW_Caps,
-    hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
     secReqsOK(S, Sec_Reqs, Sec_Caps),
+    hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
     servicePlacement2(Ss, P, NewAllocatedHW).
 
 thingReqsOK(T_Reqs, T_Caps) :-

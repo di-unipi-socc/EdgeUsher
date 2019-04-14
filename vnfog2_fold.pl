@@ -11,14 +11,14 @@ servicePlacement([], [], _).
 servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW) :-
     service(S, _, HW_Reqs, Thing_Reqs, Sec_Reqs),
     node(N, _, HW_Caps, Thing_Caps, Sec_Caps),
+    subset(T_Reqs, T_Caps), %thingReqsOK(Thing_Reqs, Thing_Caps),
     HW_Reqs =< HW_Caps,
-    thingReqsOK(Thing_Reqs, Thing_Caps),
-    secReqsOK(S, Sec_Reqs, Sec_Caps),
+    (securityPolicy(S, SecCaps); subset(Sec_Reqs, SecCaps)), % secReqsOK
     hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
     servicePlacement(Ss, P, NewAllocatedHW).
 
 thingReqsOK(T_Reqs, T_Caps) :-
-    subset(T_Reqs, T_Caps).
+    
 
 hwReqsOK(HW_Reqs, N, _, [], [(N,HW_Reqs)]).
 hwReqsOK(HW_Reqs, N, HW_Caps, [(N,A)|As], [(N,NewA)|As]) :-
@@ -28,9 +28,6 @@ hwReqsOK(HW_Reqs, N, HW_Caps, [(N1,A1)|As], [(N1,A1)|NewAs]) :-
     N \== N1,
     hwReqsOK(HW_Reqs, N, HW_Caps, As, NewAs).
 
-secReqsOK(Sec_Reqs, SecCaps) :-
-    securityPolicy(S, SecCaps); % should be specified by the user
-    subset(Sec_Reqs, SecCaps). % default behaviour
   
 flowPlacement(ServiceFlows, Placement, ServiceRoutes) :-
     flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, S2S_Latencies),
