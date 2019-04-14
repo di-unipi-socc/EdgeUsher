@@ -52,34 +52,38 @@ secReqsOK(S, Sec_Reqs, SecCaps) :-
     securityPolicy(S, SecCaps); % should be specified by the user
     subset(Sec_Reqs, SecCaps). % default behaviour
 
-% flowPlacement(ServiceFlows, Placement, ServiceRoutes) - exploits backtracking to determine valid 
-%   Service Routes for the input Placement a VNF chain;
-%   Checks bandwidth requirements.
-%   Checks maxLatency requirements specified on service paths.
+% flowPlacement(ServiceFlows, Placement, ServiceRoutes) - determine valid ServiceRoutes for the ServiceFlows a VNF chain, according to its Placement;
+%   Checks bandwidth requirements and maxLatency requirements specified on service paths.
 %   Fails if no valid route exists.
 flowPlacement(ServiceFlows, Placement, ServiceRoutes) :-
     flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, S2S_Latencies),
     maxLatenciesOK(S2S_Latencies).
 
+% flowPlacement(ServiceFlows, Placement, ServiceRoutes) - updates ServiceRoutes when a path is found for ServiceFlows.   
 flowPlacement([], _, ServiceRoutes, ServiceRoutes,[]).
 flowPlacement([SF|SFs], Placement, ServiceRoutes, NewServiceRoutes, [SFLatency|S2S_Latencies]) :-
     servicePath(SF, Placement, ServiceRoutes, ServiceRoutes2, SFLatency),
     flowPlacement(SFs, Placement, ServiceRoutes2, NewServiceRoutes, S2S_Latencies).
 
+% servicePath(ServiceFlow, Placement, Route, NewRoute, PathLatency) - determines a valid Route for a given ServiceFlow between two services;
+%   Succeeds if S1, S2 are placed on the same node, or
+%   if there exists a path (i.e. route) of length at most 5 between their deployment nodes.
 servicePath(f(S1, S2, _), Placement, ServiceRoutes, ServiceRoutes, s2s_lat(S1,S2,0)) :-
     subset([on(S1,N),on(S2,N)], Placement).
-
 servicePath(f(S1, S2, Br), Placement, ServiceRoutes, NewServiceRoutes, s2s_lat(S1,S2,PathLatency)) :-
     subset([on(S1,N1),on(S2,N2)], Placement),
     N1 \== N2,
     path(N1, N2, 5, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes).
 
+% path(N1, N2, Radius, VisitedNs, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes) - looks for a path between nodes N1 and N2;
+%   Paths can be at most of lenght Radius.
+%   Checks cumulative bandwidth requirements when multiple services communicate over the same links.
+%   Fails if no path exists.
 path(N1, N2, Radius, _, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N2, Lf, Bf),
     Bf >= Br,
     updateSR(N1, N2, Bf, S1, S2, Br, ServiceRoutes, NewServiceRoutes).
-
 path(N1, N2, Radius, VisitedNodes, f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N3, Lf, Bf), N3 \== N2, \+ member(N3, VisitedNodes),
@@ -89,6 +93,7 @@ path(N1, N2, Radius, VisitedNodes, f(S1, S2, Br), PathLatency, ServiceRoutes, Ne
     path(N3, N2, NewRadius, [N3|VisitedNodes], f(S1, S2, Br), PathLatency2, ServiceRoutes2, NewServiceRoutes),
     PathLatency is Lf+PathLatency2.
 
+% updateSR(N1, N2, _, S1, S2, Br, [], [(N1, N2, Br,[(S1,S2)])]) - updates ServiceRoutes. 
 updateSR(N1, N2, _, S1, S2, Br, [], [(N1, N2, Br,[(S1,S2)])]).
 updateSR(N1, N2, Bf, S1, S2, Br, [(N1, N2, Ba, L)|ServiceRoutes], [(N1, N2, NewBa, [(S1,S2)|L])|ServiceRoutes]) :- 
     NewBa is Ba+Br,
@@ -98,6 +103,9 @@ updateSR(N1, N2, Bf, S1, S2, Br, [(X, Y, Ba, L)|ServiceRoutes], [(X, Y, Ba, L)|N
     N2 \== Y,
     updateSR(N1, N2, Bf, S1, S2, Br, ServiceRoutes, NewServiceRoutes).
 
+% maxLatenciesOK(S2S_Latencies) - checks if all maxLatency requirements of a chain are satisfied.
+%   S2S_Latencies contains the latency of determined service-to-service routes.
+%   It also considers the processing time of each service.
 maxLatenciesOK(S2S_Latencies) :-
     findall(maxlat(Chain, RequiredLatency), maxlatency(Chain, RequiredLatency), L),
     maxLatenciesOK(L, S2S_Latencies).
