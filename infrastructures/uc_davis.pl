@@ -20,118 +20,119 @@ node(studentCenter, op, 16, [video17], []).
 node(isp, ispOp, 64, [], []).
 node(cloud, cloudOp, 10000, [], []).
 
-link(isp, studentCenter, 50, 1000).
-link(studentCenter, isp, 50, 1000).
-link(isp, firePolice, 50, 1000).
-link(firePolice, isp, 50, 1000).
-link(isp, cloud, 50, 1000).
-link(cloud, isp, 50, 1000).
 
+% edge-ISP
+0.8::link(isp, studentCenter, 10, 1000);0.2::link(isp, studentCenter, 20, 1000).
+0.8::link(studentCenter, isp, 10, 1000);0.2::link(studentCenter, isp, 20, 1000).
+0.8::link(isp, firePolice, 10, 1000);0.2::link(isp, firePolice, 20, 1000).
+0.8::link(firePolice, isp, 10, 1000);0.2::link(firePolice, isp, 20, 1000).
 
-link(parkingServices, westEntry, 5, 10).
-link(parkingServices, lifeSciences, 5, 10).
-link(parkingServices, mannLab, 5, 10).
+% ISP-cloud
+0.9::link(isp, cloud, 50, 10000);0.1::link(isp, cloud, 100, 10000).
+0.9::link(cloud, isp, 50, 10000);0.1::link(cloud, isp, 100, 10000).
 
-link(westEntry, parkingServices, 5, 10).
-link(westEntry, mannLab, 5, 10).
-link(westEntry, firePolice, 5, 10).
+0.98::link(parkingServices, westEntry, 25, 70).
+0.98::link(parkingServices, lifeSciences, 25, 70).
+0.98::link(parkingServices, mannLab, 25, 70).
 
-link(firePolice, westEntry, 5, 10).
-link(firePolice, mannLab, 5, 10).
-link(firePolice, kleiberHall, 5, 10).
-link(firePolice, hoaglandAnnex, 5, 10).
+0.98::link(westEntry, parkingServices, 25, 70).
+0.98::link(westEntry, mannLab, 25, 70).
+0.98::link(westEntry, firePolice, 25, 70).
 
-link(mannLab, parkingServices, 5, 10).
-link(mannLab, westEntry, 5, 10).
-link(mannLab, firePolice, 5, 10).
-link(mannLab, lifeSciences, 5, 10).
-link(mannLab, briggsHall, 5, 10).
-link(mannLab, sciencesLectureHall, 5, 10).
-link(mannLab, kleiberHall, 5, 10).
-link(mannLab, hoaglandAnnex, 5, 10).
+0.98::link(firePolice, westEntry, 25, 70).
+0.98::link(firePolice, mannLab, 25, 70).
+0.98::link(firePolice, kleiberHall, 25, 70).
+0.98::link(firePolice, hoaglandAnnex, 25, 70).
 
-link(hoaglandAnnex, mannLab, 5, 10).
-link(hoaglandAnnex, firePolice, 5, 10).
-link(hoaglandAnnex, kleiberHall, 5, 10).
+0.98::link(mannLab, parkingServices, 25, 70).
+0.98::link(mannLab, westEntry, 25, 70).
+0.98::link(mannLab, firePolice, 25, 70).
+0.98::link(mannLab, lifeSciences, 25, 70).
+0.98::link(mannLab, briggsHall, 25, 70).
+0.98::link(mannLab, sciencesLectureHall, 25, 70).
+0.98::link(mannLab, kleiberHall, 25, 70).
+0.98::link(mannLab, hoaglandAnnex, 25, 70).
 
-link(kleiberHall, hoaglandAnnex, 5, 10).
-link(kleiberHall, mannLab, 5, 10).
-link(kleiberHall, briggsHall, 5, 10).
-link(kleiberHall, firePolice, 5, 10).
-link(kleiberHall, sciencesLectureHall, 5, 10).
+0.98::link(hoaglandAnnex, mannLab, 25, 70).
+0.98::link(hoaglandAnnex, firePolice, 25, 70).
+0.98::link(hoaglandAnnex, kleiberHall, 25, 70).
 
-link(briggsHall, mannLab, 5, 10).
-link(briggsHall, lifeSciences, 5, 10).
-link(briggsHall, kleiberHall, 5, 10).
-link(briggsHall, sciencesLectureHall, 5, 10).
-link(briggsHall, studentCenter, 2, 300).
+0.98::link(kleiberHall, hoaglandAnnex, 25, 70).
+0.98::link(kleiberHall, mannLab, 25, 70).
+0.98::link(kleiberHall, briggsHall, 25, 70).
+0.98::link(kleiberHall, firePolice, 25, 70).
+0.98::link(kleiberHall, sciencesLectureHall, 25, 70).
 
-link(lifeSciences, parkingServices, 5, 10).
-link(lifeSciences, mannLab, 5, 10).
-link(lifeSciences, briggsHall, 5, 10).
-link(lifeSciences, studentCenter, 2, 300). %fiber
+0.98::link(briggsHall, mannLab, 25, 70).
+0.98::link(briggsHall, lifeSciences, 25, 70).
+0.98::link(briggsHall, kleiberHall, 25, 70).
+0.98::link(briggsHall, sciencesLectureHall, 25, 70).
+0.95::link(briggsHall, studentCenter, 5, 250);0.05::link(briggsHall, studentCenter, 15, 150). %fiber
 
-link(sciencesLectureHall, briggsHall, 5, 10).
-link(sciencesLectureHall, mannLab, 5, 10).
-link(sciencesLectureHall, kleiberHall, 5, 10).
-link(sciencesLectureHall, studentCenter, 2, 300). %fiber
+0.98::link(lifeSciences, parkingServices, 25, 70).
+0.98::link(lifeSciences, mannLab, 25, 70).
+0.98::link(lifeSciences, briggsHall, 25, 70).
+0.95::link(lifeSciences, studentCenter, 5, 250);0.05::link(lifeSciences, studentCenter, 15, 150). %fiber
 
-link(sciencesLab, storerHall, 5, 10).
-link(sciencesLab, kerrHall, 5, 10).
-link(sciencesLab, robbinsHallAn, 5, 10).
-link(sciencesLab, robbinsHall, 5, 10).
-link(sciencesLab, studentCenter, 2, 300). %fiber
+0.98::link(sciencesLectureHall, briggsHall, 25, 70).
+0.98::link(sciencesLectureHall, mannLab, 25, 70).
+0.98::link(sciencesLectureHall, kleiberHall, 25, 70).
+0.95::link(sciencesLectureHall, studentCenter, 5, 250);0.05::link(sciencesLectureHall, studentCenter, 15, 150). %fiber
 
-link(storerHall, sciencesLab, 5, 10).
-link(storerHall, asmundsonHall, 5, 10).
-link(storerHall, kerrHall, 5, 10).
-link(storerHall, studentCenter, 2, 300). %fiber
+0.98::link(sciencesLab, storerHall, 25, 70).
+0.98::link(sciencesLab, kerrHall, 25, 70).
+0.98::link(sciencesLab, robbinsHallAn, 25, 70).
+0.98::link(sciencesLab, robbinsHall, 25, 70).
+0.95::link(sciencesLab, studentCenter, 5, 250);0.05::link(sciencesLab, studentCenter, 15, 150). %fiber
 
-link(asmundsonHall, storerHall, 5, 10).
-link(asmundsonHall, hutchisonHall, 5, 10).
-link(asmundsonHall, hartHall, 5, 10).
-link(asmundsonHall, kerrHall, 5, 10).
+0.98::link(storerHall, sciencesLab, 25, 70).
+0.98::link(storerHall, asmundsonHall, 25, 70).
+0.98::link(storerHall, kerrHall, 25, 70).
+0.95::link(storerHall, studentCenter, 5, 250);0.05::link(storerHall, studentCenter, 15, 150). %fiber
 
-link(hutchisonHall, asmundsonHall, 5, 10).
-link(hutchisonHall, kerrHall, 5, 10).
-link(hutchisonHall, hartHall, 5, 10).
+0.98::link(asmundsonHall, storerHall, 25, 70).
+0.98::link(asmundsonHall, hutchisonHall, 25, 70).
+0.98::link(asmundsonHall, hartHall, 25, 70).
+0.98::link(asmundsonHall, kerrHall, 25, 70).
 
-link(kerrHall, asmundsonHall, 5, 10).
-link(kerrHall, storerHall, 5, 10).
-link(kerrHall, hutchisonHall, 5, 10).
-link(kerrHall, sciencesLab, 5, 10).
-link(kerrHall, robbinsHallAn, 5, 10).
-link(kerrHall, robbinsHall, 5, 10).
-link(kerrHall, hartHall, 5, 10).
-link(kerrHall, wellManHall, 5, 10).
+0.98::link(hutchisonHall, asmundsonHall, 25, 70).
+0.98::link(hutchisonHall, kerrHall, 25, 70).
+0.98::link(hutchisonHall, hartHall, 25, 70).
 
-link(robbinsHallAn, kerrHall, 5, 10).
-link(robbinsHallAn, sciencesLab, 5, 10).
-link(robbinsHallAn, wellManHall, 5, 10).
-link(robbinsHallAn, hartHall, 5, 10).
-link(robbinsHallAn, robbinsHall, 5, 10).
+0.98::link(kerrHall, asmundsonHall, 25, 70).
+0.98::link(kerrHall, storerHall, 25, 70).
+0.98::link(kerrHall, hutchisonHall, 25, 70).
+0.98::link(kerrHall, sciencesLab, 25, 70).
+0.98::link(kerrHall, robbinsHallAn, 25, 70).
+0.98::link(kerrHall, robbinsHall, 25, 70).
+0.98::link(kerrHall, hartHall, 25, 70).
+0.98::link(kerrHall, wellManHall, 25, 70).
 
-link(robbinsHall, kerrHall, 5, 10).
-link(robbinsHall, robbinsHallAn, 5, 10).
-link(robbinsHall, sciencesLab, 5, 10).
-link(robbinsHall, studentCenter, 2, 300). %fiber
+0.98::link(robbinsHallAn, kerrHall, 25, 70).
+0.98::link(robbinsHallAn, sciencesLab, 25, 70).
+0.98::link(robbinsHallAn, wellManHall, 25, 70).
+0.98::link(robbinsHallAn, hartHall, 25, 70).
+0.98::link(robbinsHallAn, robbinsHall, 25, 70).
 
-link(hartHall, wellManHall, 5, 10).
-link(hartHall, kerrHall, 5, 10).
-link(hartHall, asmundsonHall, 5, 10).
-link(hartHall, robbinsHallAn, 5, 10).
-link(hartHall, hutchisonHall, 5, 10).
+0.98::link(robbinsHall, kerrHall, 25, 70).
+0.98::link(robbinsHall, robbinsHallAn, 25, 70).
+0.98::link(robbinsHall, sciencesLab, 25, 70).
+0.95::link(robbinsHall, studentCenter, 5, 250);0.05::link(robbinsHall, studentCenter, 15, 150). %fiber
 
-link(wellManHall, kerrHall, 5, 10).
-link(wellManHall, robbinsHallAn, 5, 10).
-link(wellManHall, hartHall, 5, 10).
+0.98::link(hartHall, wellManHall, 25, 70).
+0.98::link(hartHall, kerrHall, 25, 70).
+0.98::link(hartHall, asmundsonHall, 25, 70).
+0.98::link(hartHall, robbinsHallAn, 25, 70).
+0.98::link(hartHall, hutchisonHall, 25, 70).
 
+0.98::link(wellManHall, kerrHall, 25, 70).
+0.98::link(wellManHall, robbinsHallAn, 25, 70).
+0.98::link(wellManHall, hartHall, 25, 70).
 
-
-link(studentCenter, sciencesLectureHall, 2, 300). %fiber
-link(studentCenter, lifeSciences, 2, 300). %fiber
-link(studentCenter, briggsHall, 2, 300). %fiber
-link(studentCenter, sciencesLab, 2, 300). %fiber
-link(studentCenter, storerHall, 2, 300). %fiber
-link(studentCenter, robbinsHall, 2, 300). %fiber
+0.95::link(studentCenter, sciencesLectureHall, 5, 250);0.05::link(studentCenter, sciencesLectureHall, 15, 150). %fiber
+0.95::link(studentCenter, lifeSciences, 5, 250);0.05::link(studentCenter, lifeSciences, 15, 150). %fiber
+0.95::link(studentCenter, briggsHall, 5, 250);0.05::link(studentCenter, briggsHall, 15, 150). %fiber
+0.95::link(studentCenter, sciencesLab, 5, 250);0.05::link(studentCenter, sciencesLab, 15, 150). %fiber
+0.95::link(studentCenter, storerHall, 5, 250);0.05::link(studentCenter, storerHall, 15, 150).  %fiber
+0.95::link(studentCenter, robbinsHall, 5, 250);0.05::link(studentCenter, robbinsHall, 15, 150). %fiber
 
