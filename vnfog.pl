@@ -52,7 +52,7 @@ secReqsOK(S, Sec_Reqs, SecCaps) :-
     securityPolicy(S, SecCaps); % should be specified by the user
     subset(Sec_Reqs, SecCaps). % default behaviour
 
-% flowPlacement(ServiceFlows, Placement, ServiceRoutes) - determine valid ServiceRoutes for the ServiceFlows a VNF chain, according to its Placement;
+% flowPlacement(ServiceFlows, Placement, ServiceRoutes) - determine valid ServiceRoutes for the ServiceFlows a placed VNF chain;
 %   Checks bandwidth requirements and maxLatency requirements specified on service paths.
 %   Fails if no valid route exists.
 flowPlacement(ServiceFlows, Placement, ServiceRoutes) :-
