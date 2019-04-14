@@ -2,23 +2,20 @@
 
 placement(Chain, Placement, ServiceRoutes) :-
     chain(Chain, Services),
-    servicePlacement(Services, Placement),
+    servicePlacement(Services, Placement, []),
     writenl(Placement),
     findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
     flowPlacement(ServiceFlows, Placement, ServiceRoutes).
-    
-servicePlacement(Services, Placement) :-
-    servicePlacement2(Services, Placement, []).
 
-servicePlacement2([], [], _).
-servicePlacement2([S|Ss], [on(S,N)|P], AllocatedHW) :-
+servicePlacement([], [], _).
+servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW) :-
     service(S, _, HW_Reqs, Thing_Reqs, Sec_Reqs),
     node(N, _, HW_Caps, Thing_Caps, Sec_Caps),
-    thingReqsOK(Thing_Reqs, Thing_Caps),
     HW_Reqs =< HW_Caps,
-    hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
+    thingReqsOK(Thing_Reqs, Thing_Caps),
     secReqsOK(S, Sec_Reqs, Sec_Caps),
-    servicePlacement2(Ss, P, NewAllocatedHW).
+    hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
+    servicePlacement(Ss, P, NewAllocatedHW).
 
 thingReqsOK(T_Reqs, T_Caps) :-
     subset(T_Reqs, T_Caps).
@@ -31,7 +28,7 @@ hwReqsOK(HW_Reqs, N, HW_Caps, [(N1,A1)|As], [(N1,A1)|NewAs]) :-
     N \== N1,
     hwReqsOK(HW_Reqs, N, HW_Caps, As, NewAs).
 
-secReqsOK(S, Sec_Reqs, SecCaps) :-
+secReqsOK(Sec_Reqs, SecCaps) :-
     securityPolicy(S, SecCaps); % should be specified by the user
     subset(Sec_Reqs, SecCaps). % default behaviour
   
