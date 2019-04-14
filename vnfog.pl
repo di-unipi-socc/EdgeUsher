@@ -1,15 +1,22 @@
 :- use_module(library(lists)).
 
+% placement(Chain, Placement, ServiceRoutes) - determines a Placement and corresponding ServiceRoutes for a VNF Chain;
+%   Checks all IoT, hardware, security, bandwidth and latency requirements of Chain.
+%   Fails if no valid placement exists.
 placement(Chain, Placement, ServiceRoutes) :-
     chain(Chain, Services),
     servicePlacement(Services, Placement),
     writenl(Placement),
     findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
     flowPlacement(ServiceFlows, Placement, ServiceRoutes).
-    
+
+% servicePlacement(Services, Placement) - helper predicate.
 servicePlacement(Services, Placement) :-
     servicePlacement2(Services, Placement, []).
 
+% servicePlacement2(Services, Placement, AllocatedHW) - exploits backtracking to determine a Placement for all Services in a VNF chain;
+%   Checks IoT, hardware, and security requirements of each service.
+%   If multiple services are deployed to the same node, it checks cumulative hardware requirements.
 servicePlacement2([], [], _).
 servicePlacement2([S|Ss], [on(S,N)|P], AllocatedHW) :-
     service(S, _, HW_Reqs, Thing_Reqs, Sec_Reqs),
@@ -20,9 +27,16 @@ servicePlacement2([S|Ss], [on(S,N)|P], AllocatedHW) :-
     hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
     servicePlacement2(Ss, P, NewAllocatedHW).
 
+
+% thingReqsOK(T_Reqs, T_Caps) - checks if T_Reqs ⊆ T_Caps, i.e. if all IoT requirements are satisfied by the available Things.
 thingReqsOK(T_Reqs, T_Caps) :-
     subset(T_Reqs, T_Caps).
 
+% hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHWOld, AllocatedHWNew) -  checks cumulative hardware requirements;
+%   If more than one service is deployed to the same node it sums
+%   all services requirements in terms of hardware H_Reqs and checks them against
+%   the available resources HW_Caps. Returns update allocation if it succeeds.
+%   Fails if available resources are not enough.
 hwReqsOK(HW_Reqs, N, _, [], [(N,HW_Reqs)]).
 hwReqsOK(HW_Reqs, N, HW_Caps, [(N,A)|As], [(N,NewA)|As]) :-
     NewA is A + HW_Reqs,
@@ -31,10 +45,18 @@ hwReqsOK(HW_Reqs, N, HW_Caps, [(N1,A1)|As], [(N1,A1)|NewAs]) :-
     N \== N1,
     hwReqsOK(HW_Reqs, N, HW_Caps, As, NewAs).
 
+% secReqsOK(S, Sec_Reqs, SecCaps) - checks security requirements of service S;
+%   if a complex securityPolicy is available, it checks if it holds,
+%   otherwise simply checks if Sec_Reqs ⊆ SecCaps.
 secReqsOK(S, Sec_Reqs, SecCaps) :-
     securityPolicy(S, SecCaps); % should be specified by the user
     subset(Sec_Reqs, SecCaps). % default behaviour
-  
+
+% flowPlacement(ServiceFlows, Placement, ServiceRoutes) - exploits backtracking to determine valid 
+%   Service Routes for the input Placement a VNF chain;
+%   Checks bandwidth requirements.
+%   Checks maxLatency requirements specified on service paths.
+%   Fails if no valid route exists.
 flowPlacement(ServiceFlows, Placement, ServiceRoutes) :-
     flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, S2S_Latencies),
     maxLatenciesOK(S2S_Latencies).
