@@ -73,7 +73,7 @@ servicePath(f(S1, S2, _), Placement, ServiceRoutes, ServiceRoutes, s2s_lat(S1,S2
 servicePath(f(S1, S2, Br), Placement, ServiceRoutes, NewServiceRoutes, s2s_lat(S1,S2,PathLatency)) :-
     subset([on(S1,N1),on(S2,N2)], Placement),
     N1 \== N2,
-    path(N1, N2, 5, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes).
+    path(N1, N2, 2, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes).
 
 % path(N1, N2, Radius, VisitedNs, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes) - looks for a path between nodes N1 and N2;
 %   Paths can be at most of lenght Radius.

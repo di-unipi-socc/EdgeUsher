@@ -135,4 +135,3 @@ node(cloud, cloudOp, 10000, [], []).
 0.95::link(studentCenter, sciencesLab, 5, 250);0.05::link(studentCenter, sciencesLab, 15, 150). %fiber
 0.95::link(studentCenter, storerHall, 5, 250);0.05::link(studentCenter, storerHall, 15, 150). %fiber
 0.95::link(studentCenter, robbinsHall, 5, 250);0.05::link(studentCenter, robbinsHall, 15, 150). %fiber
-

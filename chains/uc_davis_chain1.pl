@@ -36,3 +36,5 @@ chain(ucdavis_cctv, [
    service(long_term_analytics, 50, 2, [], []).
    flow(video_compression, storage, 5).
    flow(storage, long_term_analytics, 3).
+
+   securityPolicy(X, U).
