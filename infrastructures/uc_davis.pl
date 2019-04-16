@@ -17,8 +17,8 @@ node(kerrHall, 2, [video14], []).
 node(wellManHall, 8, [video15], []).
 node(hartHall, 2, [video16], []).
 node(studentCenter, 16, [video17], []).
-node(isp, ispOp, 64, [], []).
-node(cloud, cloudOp, 10000, [], []).
+node(isp, 64, [], []).
+node(cloud, 10000, [], []).
 
 
 % edge-ISP
