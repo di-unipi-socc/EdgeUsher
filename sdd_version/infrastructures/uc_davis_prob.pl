@@ -1,42 +1,43 @@
-0.2::node(parkingServices, 2, [video1], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(parkingServices, 1, [video1], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]).
+0.2::node(parkingServices, 2, [video1], [authentication, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(parkingServices, 1, [video1], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 
-0.2::node(westEntry, 2, [], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(westEntry, 1, [], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]).
+0.2::node(westEntry, 2, [], [authentication, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(westEntry, 1, [], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 
-0.2::node(kleiberHall, 2, [video5], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]); 0.8::node(kleiberHall, 1, [video5], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]).
+0.2::node(kleiberHall, 2, [video5], [authentication,  anti_tampering,wireless_security,obfuscated_storage]); 0.8::node(kleiberHall, 1, [video5], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 
-0.2::node(storerHall, 2, [video10], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(storerHall, 1, [video10], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]).
+0.2::node(storerHall, 2, [video10], [authentication, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(storerHall, 1, [video10], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 
-0.2::node(kerrHall, 2, [video14], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(kerrHall, 1, [video14], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]).
+0.2::node(kerrHall, 2, [video14], [authentication,  anti_tampering,wireless_security,obfuscated_storage]);0.8::node(kerrHall, 1, [video14], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 
-0.2::node(hartHall, 2, [video16], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(hartHall, 1, [video16], [authentication, resource_monitoring, anti_tampering,wireless_security,obfuscated_storage]).
-
-
-0.2::node(hoaglandAnnex, 4, [video6], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(hoaglandAnnex, 2, [video6], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
-
-0.2::node(briggsHall, 4, [video7], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(briggsHall, 2, [video7], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
-
-0.2::node(sciencesLab, 4, [video9], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(sciencesLab, 2, [video9], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
-
-0.2::node(asmundsonHall, 4, [video12], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(asmundsonHall, 2, [video12], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
-
-0.2::node(robbinsHallAn, 4, [], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(robbinsHallAn, 2, [], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
-
-0.2::node(mannLab, 8, [video3], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(mannLab, 4, [video3], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
-
-0.2::node(lifeSciences, 8, [video4], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(lifeSciences, 4, [video4], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
-
-0.2::node(sciencesLectureHall, 8, [video8], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(sciencesLectureHall, 4, [video8], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
-
-0.2::node(hutchisonHall, 8, [video11], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(hutchisonHall, 4, [video11], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
-
-0.2::node(robbinsHall, 8, [video13], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(robbinsHall, 4, [video13], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
-
-0.2::node(wellManHall, 8, [video15], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(wellManHall, 4, [video15], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+0.2::node(hartHall, 2, [video16], [authentication,  anti_tampering,wireless_security,obfuscated_storage]);0.8::node(hartHall, 1, [video16], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 
 
-0.2::node(firePolice, 16, [video2, alarm1], [access_logs, access_control, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(firePolice, 8, [video2, alarm1], [access_logs, access_control, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+0.2::node(hoaglandAnnex, 4, [video6], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(hoaglandAnnex, 2, [video6], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
 
-0.2::node(studentCenter, 16, [video17], [access_logs, access_control, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(studentCenter, 8, [video17], [access_logs, access_control, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+0.2::node(briggsHall, 4, [video7], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(briggsHall, 2, [video7], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
+
+0.2::node(sciencesLab, 4, [video9], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(sciencesLab, 2, [video9], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
+
+0.2::node(asmundsonHall, 4, [video12], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(asmundsonHall, 2, [video12], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
+
+0.2::node(robbinsHallAn, 4, [], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(robbinsHallAn, 2, [], [authentication, anti_tampering, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
+
+
+0.2::node(mannLab, 8, [video3], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(mannLab, 4, [video3], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+
+0.2::node(lifeSciences, 8, [video4], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(lifeSciences, 4, [video4], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+
+0.2::node(sciencesLectureHall, 8, [video8], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(sciencesLectureHall, 4, [video8], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+
+0.2::node(hutchisonHall, 8, [video11], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(hutchisonHall, 4, [video11], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+
+0.2::node(robbinsHall, 8, [video13], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(robbinsHall, 4, [video13], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+
+0.2::node(wellManHall, 8, [video15], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(wellManHall, 4, [video15], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+
+
+0.2::node(firePolice, 16, [video2, alarm1], [access_logs, access_control, authentication, backup, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(firePolice, 8, [video2, alarm1], [access_logs, access_control, authentication, backup,resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+
+0.2::node(studentCenter, 16, [video17], [access_logs, access_control, authentication, backup, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(studentCenter, 8, [video17], [access_logs, access_control, authentication, backup,resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
 
 
 0.2::node(isp, 64, [], [access_logs, access_control, authentication, backup, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage, anti_tampering,obfuscated_storage]);0.8::node(isp, 32, [], [access_logs, access_control, authentication, backup, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage, anti_tampering,obfuscated_storage]).
