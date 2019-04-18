@@ -3,10 +3,10 @@
 placement(Chain, Placement, ServiceRoutes, Threshold) :-
     chain(Chain, Services),
     servicePlacement(Services, Placement, [], Threshold),
-    %write(Placement),writenl(' - OK'),
+    write(Placement),writenl(' - OK'),
     findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
-    flowPlacement(ServiceFlows, Placement, ServiceRoutes, Threshold).
-    %write(ServiceRoutes),writenl(' - OK').
+    flowPlacement(ServiceFlows, Placement, ServiceRoutes, Threshold),
+    write(ServiceRoutes),writenl(' - OK').
 
 servicePlacement([], [], _, T).
 servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW, Threshold) :-
@@ -16,12 +16,11 @@ servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW, Threshold) :-
     thingReqsOK(Thing_Reqs, Thing_Caps),
     secReqsOK(Sec_Reqs, Sec_Caps),
     hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
-    servicePlacement(Ss, P, NewAllocatedHW, Threshold),
-    write([on(S,N)|P]),writenl(' - OK').  
+    servicePlacement(Ss, P, NewAllocatedHW, Threshold).
+    %write([on(S,N)|P]),writenl(' - OK').  
 
 thingReqsOK(T_Reqs, T_Caps) :-
-    subset(T_Reqs, T_Caps),
-    write(T_Reqs), write(T_Caps).
+    subset(T_Reqs, T_Caps).
 
 hwReqsOK(HW_Reqs, N, _, [], [(N,HW_Reqs)]).
 hwReqsOK(HW_Reqs, N, HW_Caps, [(N,A)|As], [(N,NewA)|As]) :-
