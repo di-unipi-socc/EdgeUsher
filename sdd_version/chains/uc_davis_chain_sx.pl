@@ -2,7 +2,7 @@ chain(ucdavis_cctv, [
     cctv_driver1,
     feature_extr1,
     lightweight_analytics,
-    alarm_driver1,
+    alarm_driver1, 
     wan_optimiser,
     storage,
     video_analytics
@@ -20,10 +20,10 @@ chain(ucdavis_cctv, [
    flow(feature_extr1, lightweight_analytics, 8).
    flow(lightweight_analytics, alarm_driver1, .5).
    flow(feature_extr1, wan_optimiser, 20).
-   flow(video_analytics, lightweight_analytics, 1).
-   flow(wan_optimiser, storage, 15).
+   flow(wan_optimiser, storage, 15). 
    flow(storage, video_analytics, 10).
+   %flow(video_analytics, lightweight_analytics, 0.1).
+   
 
-   maxLatency([cctv_driver1, feature_extr1, lightweight_analytics, alarm_driver1], 50).
-
+   maxLatency([cctv_driver1, feature_extr1, lightweight_analytics, alarm_driver1], 150).
 
