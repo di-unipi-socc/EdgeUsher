@@ -1,5 +1,5 @@
-:- consult('vnfog').
-:- consult('infrastructures/uc_davis_prob_sx').
-:- consult('chains/uc_davis_chain1_sx_nosec').
+:- consult('vnfog.1').
+:- consult('infrastructures/uc_davis_prob').
+:- consult('chains/uc_davis_chain1').
 
-query(placement(C,P,L,.2)).
+query(placement(C,P,L,.6)).
