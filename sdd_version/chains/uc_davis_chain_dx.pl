@@ -9,7 +9,7 @@ chain(ucdavis_cctv, [
    ]).
 
    service(cctv_driver1, 2,  0.5, [ video10 ], or(anti_tampering, access_control)).
-   service(feature_extr1, 5, 2, [], and(authentication, and(anti_tampering, or(obfuscated_storage, encrypted_storage)))).
+   service(feature_extr1, 5, 2, [], and(access_control, and(anti_tampering, or(obfuscated_storage, encrypted_storage)))).
    service(lightweight_analytics, 10,  2, [], and(access_control, or(obfuscated_storage, encrypted_storage))).
    service(alarm_driver1, 2,  0.5, [ alarm2 ], [ access_control, host_IDS]).
    service(wan_optimiser, 5, 5, [], [pki, firewall, host_IDS]).

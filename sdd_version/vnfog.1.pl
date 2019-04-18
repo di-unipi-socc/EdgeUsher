@@ -58,7 +58,7 @@ servicePath(f(S1, S2, _), Placement, ServiceRoutes, ServiceRoutes, s2s_lat(S1,S2
 servicePath(f(S1, S2, Br), Placement, ServiceRoutes, NewServiceRoutes, s2s_lat(S1,S2,PathLatency), Threshold) :-
     subset([on(S1,N1),on(S2,N2)], Placement),
     N1 \== N2,
-    path(N1, N2, 3, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes, Threshold).
+    path(N1, N2, 4, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes, Threshold).
 
 path(N1, N2, Radius, _, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes, Threshold) :-
     Radius > 0,
