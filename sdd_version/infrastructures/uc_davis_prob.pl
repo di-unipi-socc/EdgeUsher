@@ -21,7 +21,6 @@
 
 0.2::node(robbinsHallAn, 4, [], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]);0.8::node(robbinsHallAn, 2, [], [authentication, resource_monitoring, iot_data_encryption, firewall, pki, wireless_security, encrypted_storage]).
 
-
 0.2::node(mannLab, 8, [video3], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(mannLab, 4, [video3], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
 
 0.2::node(lifeSciences, 8, [video4], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]);0.8::node(lifeSciences, 4, [video4], [access_logs, authentication, resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
