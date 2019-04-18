@@ -14,7 +14,7 @@ chain(ucdavis_cctv, [
    service(alarm_driver1, 2,  0.5, [ alarm2 ], [ access_control, host_IDS]).
    service(wan_optimiser, 5, 5, [], [pki, firewall, host_IDS]).
    service(storage, 10, 10, [], [backup, pki]).
-   service(video_analytics, 40, 8, [], and(resource_monitoring, or(obfuscated_storage, encrypted_storage))).
+   service(video_analytics, 40, 16, [], and(resource_monitoring, or(obfuscated_storage, encrypted_storage))).
 
    flow(cctv_driver1, feature_extr1, 20).
    flow(feature_extr1, lightweight_analytics, 8).
