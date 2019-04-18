@@ -1,4 +1,4 @@
-:- consult('vnfog.1').
+:- consult('vnfog').
 :- consult('infrastructures/uc_davis_prob_sx').
 :- consult('chains/uc_davis_chain_sx').
 

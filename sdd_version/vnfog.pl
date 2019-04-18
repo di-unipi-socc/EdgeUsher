@@ -20,7 +20,8 @@ servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW, Threshold) :-
     write([on(S,N)|P]),writenl(' - OK').  
 
 thingReqsOK(T_Reqs, T_Caps) :-
-    subset(T_Reqs, T_Caps).
+    subset(T_Reqs, T_Caps),
+    write(T_Reqs), write(T_Caps).
 
 hwReqsOK(HW_Reqs, N, _, [], [(N,HW_Reqs)]).
 hwReqsOK(HW_Reqs, N, HW_Caps, [(N,A)|As], [(N,NewA)|As]) :-
