@@ -2,11 +2,11 @@
 
 placement(Chain, Placement, ServiceRoutes, Threshold) :-
     chain(Chain, Services),
-    servicePlacement(Services, Placement, [], Threshold),
-    write(Placement),writenl(' - OK'),
+    servicePlacement(Services, Placement, [], Threshold), 
+    %write(Prob), write('--'), write(Placement),writenl(' - OK'),
     findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
-    flowPlacement(ServiceFlows, Placement, ServiceRoutes, Threshold),
-    write(ServiceRoutes),writenl(' - OK').
+    flowPlacement(ServiceFlows, Placement, ServiceRoutes, Threshold).
+    %write(ServiceRoutes),writenl(' - OK').
 
 servicePlacement([], [], _, T).
 servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW, Threshold) :-
@@ -17,7 +17,6 @@ servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW, Threshold) :-
     secReqsOK(Sec_Reqs, Sec_Caps),
     hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
     servicePlacement(Ss, P, NewAllocatedHW, Threshold).
-    %write([on(S,N)|P]),writenl(' - OK').  
 
 thingReqsOK(T_Reqs, T_Caps) :-
     subset(T_Reqs, T_Caps).
@@ -58,7 +57,7 @@ servicePath(f(S1, S2, _), Placement, ServiceRoutes, ServiceRoutes, s2s_lat(S1,S2
 servicePath(f(S1, S2, Br), Placement, ServiceRoutes, NewServiceRoutes, s2s_lat(S1,S2,PathLatency), Threshold) :-
     subset([on(S1,N1),on(S2,N2)], Placement),
     N1 \== N2,
-    path(N1, N2, 5, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes, Threshold).
+    path(N1, N2, 3, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes, Threshold).
 
 path(N1, N2, Radius, _, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes, Threshold) :-
     Radius > 0,
@@ -73,7 +72,6 @@ path(N1, N2, Radius, VisitedNodes, f(S1, S2, Br), PathLatency, ServiceRoutes, Ne
     updateSR(N1, N3, Bf, S1, S2, Br, ServiceRoutes, ServiceRoutes2),
     NewRadius is Radius-1,
     path(N3, N2, NewRadius, [N3|VisitedNodes], f(S1, S2, Br), PathLatency2, ServiceRoutes2, NewServiceRoutes,Threshold),
-    %Prob >= Threshold,
     PathLatency is Lf+PathLatency2.
 
 updateSR(N1, N2, _, S1, S2, Br, [], [(N1, N2, Br,[(S1,S2)])]).

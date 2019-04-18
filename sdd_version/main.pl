@@ -1,4 +1,5 @@
-:- consult('vnfog.1').
+%:- consult('vnfog.1'). %SDD Library
+:- consult('vnfog'). %No SDD
 :- consult('infrastructures/uc_davis_prob_sx').
 :- consult('chains/uc_davis_chain_sx').
 
