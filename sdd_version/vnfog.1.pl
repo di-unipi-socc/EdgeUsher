@@ -3,7 +3,6 @@
 placement(Chain, Placement, ServiceRoutes, Threshold) :-
     chain(Chain, Services),
     subquery(servicePlacement(Services, Placement, [], Threshold), Prob),
-    writenl(Prob),
     Prob >= Threshold,
     write(Placement),writenl(' - OK'),
     findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
@@ -18,8 +17,7 @@ servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW, Threshold) :-
     thingReqsOK(Thing_Reqs, Thing_Caps),
     secReqsOK(Sec_Reqs, Sec_Caps),
     hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
-    servicePlacement(Ss, P, NewAllocatedHW, Threshold),
-    write([on(S,N)|P]), writenl(' - OK').
+    servicePlacement(Ss, P, NewAllocatedHW, Threshold).
 
 thingReqsOK(T_Reqs, T_Caps) :-
     subset(T_Reqs, T_Caps).
