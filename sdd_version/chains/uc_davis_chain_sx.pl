@@ -22,7 +22,7 @@ chain(ucdavis_cctv, [
    flow(feature_extr1, wan_optimiser, 20).
    flow(video_analytics, lightweight_analytics, 1).
    flow(wan_optimiser, storage, 15).
-   flow(storage, video_analytics, 50).
+   flow(storage, video_analytics, 10).
 
    maxLatency([cctv_driver1, feature_extr1, lightweight_analytics, alarm_driver1], 50).
 

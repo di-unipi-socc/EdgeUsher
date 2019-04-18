@@ -4,7 +4,7 @@ placement(Chain, Placement, ServiceRoutes, Threshold) :-
     chain(Chain, Services),
     subquery(servicePlacement(Services, Placement, [], Threshold), Prob),
     Prob >= Threshold,
-    write(Placement),writenl(' - OK'),
+    write(Prob), write('--'), write(Placement),writenl(' - OK'),
     findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
     flowPlacement(ServiceFlows, Placement, ServiceRoutes, Threshold).
     %write(ServiceRoutes),writenl(' - OK').
