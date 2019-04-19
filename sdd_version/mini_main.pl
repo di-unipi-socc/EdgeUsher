@@ -1,4 +1,4 @@
-:- consult('vnfog').
+:- consult('vnfog.1').
 
 0.2::node(nodeA, 2, [video1], [authentication, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(nodeA, 1, [video1], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 0.2::node(nodeB, 2, [video2], [authentication, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(nodeB, 1, [video2], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
