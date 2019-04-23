@@ -1,23 +1,28 @@
 :- use_module(library(lists)).
 
-placement(Chain, Placement, ServiceRoutes, Threshold) :-
+placement(Chain, Placement, ServiceRoutes, Threshold, Prob) :-
     chain(Chain, Services),
-    subquery(servicePlacement(Services, Placement, [], Threshold), Prob),
+    subquery(servicePlacement(Services, Placement, Threshold), Prob),
     Prob >= Threshold,
-    %write(Prob), write('--'), write(Placement),writenl(' - OK'),
-    findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
-    flowPlacement(ServiceFlows, Placement, ServiceRoutes, Threshold).
-    %write(ServiceRoutes),writenl(' - OK').
+    flowPlacement(Placement, ServiceRoutes).
+    
 
-servicePlacement([], [], _, T).
-servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW, Threshold) :-
+servicePlacement(Services, Placement, Threshold) :-
+    servicePlacement2(Services, Placement, [], Threshold).
+
+flowPlacement(Placement, ServiceRoutes):-
+    findall(f(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
+    flowPlacement(ServiceFlows, Placement, ServiceRoutes).
+
+servicePlacement2([], [], _, T).
+servicePlacement2([S|Ss], [on(S,N)|P], AllocatedHW, Threshold) :-
     service(S, _, HW_Reqs, Thing_Reqs, Sec_Reqs),
     node(N, HW_Caps, Thing_Caps, Sec_Caps),
     HW_Reqs =< HW_Caps,
     thingReqsOK(Thing_Reqs, Thing_Caps),
     secReqsOK(Sec_Reqs, Sec_Caps),
     hwReqsOK(HW_Reqs, N, HW_Caps, AllocatedHW, NewAllocatedHW),
-    servicePlacement(Ss, P, NewAllocatedHW, Threshold).
+    servicePlacement2(Ss, P, NewAllocatedHW, Threshold).
 
 thingReqsOK(T_Reqs, T_Caps) :-
     subset(T_Reqs, T_Caps).
@@ -41,38 +46,39 @@ secReqsOK(or(P,Q), SecCaps):-
     secReqsOK(P, SecCaps);
     secReqsOK(Q, SecCaps).
 secReqsOK(P, SecCaps):-
+    P \== [],
     member(P, SecCaps).
 
-flowPlacement(ServiceFlows, Placement, ServiceRoutes, Threshold) :-
-    flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, S2S_Latencies, Threshold),
+flowPlacement(ServiceFlows, Placement, ServiceRoutes) :-
+    flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, S2S_Latencies),
     maxLatenciesOK(S2S_Latencies).
 
-flowPlacement([], _, ServiceRoutes, ServiceRoutes,[], _).
-flowPlacement([SF|SFs], Placement, ServiceRoutes, NewServiceRoutes, [SFLatency|S2S_Latencies], Threshold) :-
-    servicePath(SF, Placement, ServiceRoutes, ServiceRoutes2, SFLatency, Threshold),
-    flowPlacement(SFs, Placement, ServiceRoutes2, NewServiceRoutes, S2S_Latencies, Threshold).
+flowPlacement([], _, ServiceRoutes, ServiceRoutes,[]).
+flowPlacement([SF|SFs], Placement, ServiceRoutes, NewServiceRoutes, [SFLatency|S2S_Latencies]) :-
+    servicePath(SF, Placement, ServiceRoutes, ServiceRoutes2, SFLatency),
+    flowPlacement(SFs, Placement, ServiceRoutes2, NewServiceRoutes, S2S_Latencies).
 
-servicePath(f(S1, S2, _), Placement, ServiceRoutes, ServiceRoutes, s2s_lat(S1,S2,0), Threshold) :-
+servicePath(f(S1, S2, _), Placement, ServiceRoutes, ServiceRoutes, s2s_lat(S1,S2,0)) :-
     subset([on(S1,N),on(S2,N)], Placement).
 
-servicePath(f(S1, S2, Br), Placement, ServiceRoutes, NewServiceRoutes, s2s_lat(S1,S2,PathLatency), Threshold) :-
+servicePath(f(S1, S2, Br), Placement, ServiceRoutes, NewServiceRoutes, s2s_lat(S1,S2,PathLatency)) :-
     subset([on(S1,N1),on(S2,N2)], Placement),
     N1 \== N2,
-    path(N1, N2, 3, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes, Threshold).
+    path(N1, N2, 3, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes).
 
-path(N1, N2, Radius, _, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes, Threshold) :-
+path(N1, N2, Radius, _, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N2, Lf, Bf),
     Bf >= Br,
     updateSR(N1, N2, Bf, S1, S2, Br, ServiceRoutes, NewServiceRoutes).
 
-path(N1, N2, Radius, VisitedNodes, f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes, Threshold) :-
+path(N1, N2, Radius, VisitedNodes, f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
     link(N1, N3, Lf, Bf), N3 \== N2, \+ member(N3, VisitedNodes),
     Bf >= Br,
     updateSR(N1, N3, Bf, S1, S2, Br, ServiceRoutes, ServiceRoutes2),
     NewRadius is Radius-1,
-    path(N3, N2, NewRadius, [N3|VisitedNodes], f(S1, S2, Br), PathLatency2, ServiceRoutes2, NewServiceRoutes,Threshold),
+    path(N3, N2, NewRadius, [N3|VisitedNodes], f(S1, S2, Br), PathLatency2, ServiceRoutes2, NewServiceRoutes),
     PathLatency is Lf+PathLatency2.
 
 updateSR(N1, N2, _, S1, S2, Br, [], [(N1, N2, Br,[(S1,S2)])]).

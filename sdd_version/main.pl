@@ -1,7 +1,7 @@
 :- consult('vnfog.1'). %SDD Library
 %:- consult('vnfog'). %No SDD
-:- consult('infrastructures/uc_davis_prob_dx').
-:- consult('chains/uc_davis_chain_dx').
+:- consult('infrastructures/uc_davis_prob_sx').
+:- consult('chains/uc_davis_chain_sx').
 
 place(C,P,L) :- 
     cmd_args([A]),atom_number(A,N), N >= 0, N =< 1, 

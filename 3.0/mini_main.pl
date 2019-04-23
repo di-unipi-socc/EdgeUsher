@@ -1,10 +1,8 @@
-:- consult('vnfog.1').
-
 0.2::node(nodeA, 2, [video1], [authentication, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(nodeA, 1, [video1], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 0.2::node(nodeB, 2, [video2], [authentication, anti_tampering,wireless_security,obfuscated_storage]);0.8::node(nodeB, 1, [video2], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
 
-0.98::link(nodeA, nodeB, 25, 70).
-0.98::link(nodeB, nodeA, 25, 70).
+.98::link(nodeA, nodeB, 25, 70).
+.98::link(nodeB, nodeA, 25, 70).
 
 chain(ucdavis_cctv, [
     cctv_driver,
@@ -20,6 +18,6 @@ chain(ucdavis_cctv, [
    maxLatency([cctv_driver, feature_extr], 35).
 
 
-query(placement(C,P,L,0.1, R)).
+
 
 
