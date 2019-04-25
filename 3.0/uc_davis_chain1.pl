@@ -24,4 +24,4 @@ chain(ucdavis_cctv, [
    %flow(storage, long_term_analytics, 3).
    %maxLatency([cctv_driver1, feature_extr1, short_term_analytics1, alarm_driver1], 50).
 %ADDED
-maxLatency([cctv_driver1, feature_extr1], 50).
+maxLatency([cctv_driver1, feature_extr1], 350).

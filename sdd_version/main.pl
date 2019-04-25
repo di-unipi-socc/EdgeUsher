@@ -5,7 +5,7 @@
 
 place(C,P,L) :- 
     cmd_args([A]),atom_number(A,N), N >= 0, N =< 1, 
-    placement(C,P,L,N).
+    placement(C,P,L,N, Prob).
 
 query(place(C,P,L)).
 

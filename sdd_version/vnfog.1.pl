@@ -35,19 +35,15 @@ hwReqsOK(HW_Reqs, N, HW_Caps, [(N,A)|As], [(N,NewA)|As]) :-
     N \== N1,
     hwReqsOK(HW_Reqs, N, HW_Caps, As, NewAs).
 
-secReqsOK([], SecCaps).
-secReqsOK([P|Ps], SecCaps):-
-    subset([P|Ps], SecCaps).
+secReqsOK([], _).
+secReqsOK([SR|SRs], Sec_Caps) :- subset([SR|SRs], Sec_Caps).
 
-secReqsOK(and(P,Q), SecCaps):-
-    secReqsOK(P, SecCaps),
-    secReqsOK(Q, SecCaps).
-secReqsOK(or(P,Q), SecCaps):-
-    secReqsOK(P, SecCaps);
-    secReqsOK(Q, SecCaps).
-secReqsOK(P, SecCaps):-
-    P \== [],
-    member(P, SecCaps).
+secReqsOK(and(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps), secReqsOK2(P2, Sec_Caps).
+secReqsOK(or(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps); secReqsOK2(P2, Sec_Caps).
+
+secReqsOK2(and(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps), secReqsOK2(P2, Sec_Caps).
+secReqsOK2(or(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps); secReqsOK2(P2, Sec_Caps).
+secReqsOK2(P, Sec_Caps) :- member(P, Sec_Caps).  
 
 flowPlacement(ServiceFlows, Placement, ServiceRoutes) :-
     flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, S2S_Latencies),

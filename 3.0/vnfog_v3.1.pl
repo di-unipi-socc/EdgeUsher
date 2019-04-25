@@ -1,9 +1,10 @@
 %% problog -k 'kbest' file
 :- use_module(library(lists)).
+:- use_module(library(cut)).
 %:- consult('mini_main').
 %:- consult('test0').
-%:- consult('uc_davis_no_prob').
-:- consult('uc_davis_prob_sx').
+:- consult('uc_davis_no_prob').
+%:- consult('uc_davis_prob_sx').
 :- consult('uc_davis_chain_sx').
 
 query(fullPlacement(C,P)).
@@ -38,12 +39,12 @@ thingReqsOK(T_Reqs, T_Caps) :- subset(T_Reqs, T_Caps).
 secReqsOK([], _).
 secReqsOK([SR|SRs], Sec_Caps) :- subset([SR|SRs], Sec_Caps).
 
-secReqsOK(and(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps), secReqsOK2(P2, Sec_Caps).
-secReqsOK(or(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps); secReqsOK2(P2, Sec_Caps).
+secReqsOK(and(P1,P2), Sec_Caps) :- cut(secReqsOK2(P1, Sec_Caps)), cut(secReqsOK2(P2, Sec_Caps)).
+secReqsOK(or(P1,P2), Sec_Caps) :- cut(secReqsOK2(P1, Sec_Caps)); cut(secReqsOK2(P2, Sec_Caps)).
 
-secReqsOK2(and(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps), secReqsOK2(P2, Sec_Caps).
-secReqsOK2(or(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps); secReqsOK2(P2, Sec_Caps).
-secReqsOK2(P, Sec_Caps) :- member(P, Sec_Caps).  
+secReqsOK2(1, and(P1,P2), Sec_Caps) :- cut(secReqsOK2(P1, Sec_Caps)), cut(secReqsOK2(P2, Sec_Caps)).
+secReqsOK2(2, or(P1,P2), Sec_Caps) :- cut(secReqsOK2(P1, Sec_Caps)); cut(secReqsOK2(P2, Sec_Caps)).
+secReqsOK2(3, P, Sec_Caps) :- member(P, Sec_Caps).
 
 % Placement is a list of terms of the kind (n,ss,aa,rs) where
 %  -ss is the list of services placed on node n
@@ -59,7 +60,7 @@ hwReqsOK(HW_Reqs, N, HW_Caps, S, [(N1,Ss1,A1,Rs1)|P], [(N1,Ss1,A1,Rs1)|NewP]) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 flowPlacementStep([], P, P).
 flowPlacementStep([nf(S1,N1,S2,N2,Br)|NFs], P, NewP) :-
-    path(S1, N1, S2, N2, Br, 3, [], P, P2),     %3 is the (maximal) radius of paths
+    path(S1, N1, S2, N2, Br, 6, [], P, P2),     %3 is the (maximal) radius of paths
     flowPlacementStep(NFs, P2, NewP).
 
 path(S1, N1, S2, N2, Br, Radius, _, P, NewP) :-
@@ -84,10 +85,10 @@ update([(N0,Ss0,A0,Rs0)|P], S1, N1, S2, N2, Br, Bf, [(N0,Ss0,A0,Rs0)|NewP]) :-
     update(P, S1, N1, S2, N2, Br, Bf, NewP).
 
 update2([], S1, S2, N2, Br, _, [(N2,Br,[(S1,S2)])]).    
-update2([(N2,Br2,S2Ss)|Rs], S1, S2, N2, Br, Bf, [(N2,NewBr,NewS2Ss)|Rs]) :-
+update2([(N2,Br2,S2Ss)|Rs], S1, S2, N2, Br, Bf, [(N2,NewBr,[(S1,S2)|S2Ss])]) :-
     NewBr is Br2+Br,
-    Bf >= NewBr,
-    update3(S2Ss,S1,S2,NewS2Ss).
+    Bf >= NewBr.
+    %update3(S2Ss,S1,S2,NewS2Ss).
 update2([(N0,Br0,S2Ss)|Rs], S1, S2, N2, Br, Bf, [(N0,Br0,S2Ss)|NewRs]) :-
     N0 \== N2,
     update2(Rs, S1, S2, N2, Br, Bf, NewRs).
