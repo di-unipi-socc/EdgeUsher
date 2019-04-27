@@ -18,7 +18,7 @@ chain(ucdavis_cctv, [
 
    flow(cctv_driver, feature_extr, 20).
    flow(feature_extr, lightweight_analytics, 8).
-   flow(lightweight_analytics, alarm_driver, .5).
+   flow(lightweight_analytics, alarm_driver, 0.5).
    flow(feature_extr, wan_optimiser, 20).
    flow(wan_optimiser, storage, 15). 
    flow(storage, video_analytics, 10).

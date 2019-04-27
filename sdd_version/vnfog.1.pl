@@ -1,4 +1,5 @@
 :- use_module(library(lists)).
+:- use_module(library(cut)).
 
 placement(Chain, Placement, ServiceRoutes, Threshold, Prob) :-
     chain(Chain, Services),
@@ -6,7 +7,6 @@ placement(Chain, Placement, ServiceRoutes, Threshold, Prob) :-
     Prob >= Threshold,
     flowPlacement(Placement, ServiceRoutes).
     
-
 servicePlacement(Services, Placement, Threshold) :-
     servicePlacement2(Services, Placement, [], Threshold).
 
@@ -38,12 +38,12 @@ hwReqsOK(HW_Reqs, N, HW_Caps, [(N,A)|As], [(N,NewA)|As]) :-
 secReqsOK([], _).
 secReqsOK([SR|SRs], Sec_Caps) :- subset([SR|SRs], Sec_Caps).
 
-secReqsOK(and(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps), secReqsOK2(P2, Sec_Caps).
-secReqsOK(or(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps); secReqsOK2(P2, Sec_Caps).
+secReqsOK(and(P1,P2), Sec_Caps) :- cut(secReqsOK2(P1, Sec_Caps)), cut(secReqsOK2(P2, Sec_Caps)).
+secReqsOK(or(P1,P2), Sec_Caps) :- cut(secReqsOK2(P1, Sec_Caps)); cut(secReqsOK2(P2, Sec_Caps)).
 
-secReqsOK2(and(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps), secReqsOK2(P2, Sec_Caps).
-secReqsOK2(or(P1,P2), Sec_Caps) :- secReqsOK2(P1, Sec_Caps); secReqsOK2(P2, Sec_Caps).
-secReqsOK2(P, Sec_Caps) :- member(P, Sec_Caps).  
+secReqsOK2(1, and(P1,P2), Sec_Caps) :- cut(secReqsOK2(P1, Sec_Caps)), cut(secReqsOK2(P2, Sec_Caps)).
+secReqsOK2(2, or(P1,P2), Sec_Caps) :- cut(secReqsOK2(P1, Sec_Caps)); cut(secReqsOK2(P2, Sec_Caps)).
+secReqsOK2(3, P, Sec_Caps) :- member(P, Sec_Caps). 
 
 flowPlacement(ServiceFlows, Placement, ServiceRoutes) :-
     flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, S2S_Latencies),
@@ -60,7 +60,7 @@ servicePath(f(S1, S2, _), Placement, ServiceRoutes, ServiceRoutes, s2s_lat(S1,S2
 servicePath(f(S1, S2, Br), Placement, ServiceRoutes, NewServiceRoutes, s2s_lat(S1,S2,PathLatency)) :-
     subset([on(S1,N1),on(S2,N2)], Placement),
     N1 \== N2,
-    path(N1, N2, 3, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes).
+    path(N1, N2, 2, [], f(S1, S2, Br), PathLatency, ServiceRoutes, NewServiceRoutes).
 
 path(N1, N2, Radius, _, f(S1, S2, Br), Lf, ServiceRoutes, NewServiceRoutes) :-
     Radius > 0,
