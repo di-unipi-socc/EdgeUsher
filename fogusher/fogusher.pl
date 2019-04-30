@@ -1,19 +1,14 @@
 :- use_module(library(lists)).
-%:- consult('chain').
-:- consult('uc_davis_chain_sx').
-%:- consult('infra/infrastructure_with_NO_probs').
-:- consult('infra/infrastructure_with_single_probs').
-%:- consult('infra/infrastructure_with_probs').
+:- consult('newchain').
+:- consult('infra/extended').
 
-query(placement(C,P,SR)).
-%query(placement(ucdavis_cctv,[on(cctv_driver,parkingServices), on(feature_extr,hoaglandAnnex), on(lightweight_analytics,firePolice), on(alarm_driver,firePolice), on(wan_optimiser,firePolice), on(storage,cloud), on(video_analytics,isp)],[(mannLab, hoaglandAnnex, 20, [(cctv_driver, feature_extr)]), (parkingServices, mannLab, 20, [(cctv_driver, feature_extr)]), (hoaglandAnnex, mannLab, 28, [(feature_extr, wan_optimiser), (feature_extr, lightweight_analytics)]), (mannLab, firePolice, 20, [(feature_extr, wan_optimiser)]), (isp, cloud, 15, [(wan_optimiser, storage)]), (firePolice, isp, 15, [(wan_optimiser, storage)]), (cloud, isp, 10, [(storage, video_analytics)])])).
+query(placement(Chain, Placement, ServiceRoutes)).
 
 placement(Chain, Placement, ServiceRoutes) :-
     chain(Chain, Services),
     servicePlacement(Services, Placement),
     flowPlacement(Placement, ServiceRoutes).
-    
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 servicePlacement(Services, Placement) :-
     servicePlacement(Services, Placement, []).
 
@@ -40,7 +35,6 @@ hwReqsOK(HW_Reqs, HW_Caps, N, [(N,A)|As], [(N,NewA)|As]) :-
 hwReqsOK(HW_Reqs, HW_Caps, N, [(N1,A1)|As], [(N1,A1)|NewAs]) :-
     N \== N1, hwReqsOK(HW_Reqs, HW_Caps, N, As, NewAs).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 flowPlacement(Placement, ServiceRoutes) :-
     findall(flow(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
     flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, [], S2S_latencies),

@@ -1,10 +1,8 @@
 :- use_module(library(lists)).
-:- consult('chain').
-:- consult('infra/infrastructure_with_NO_probs').
-%:- consult('infrastructure_with_single_probs').
-%:- consult('infrastructure_with_probs').
+:- consult('newchain').
+:- consult('infra/extended').
 
-query(placement(C,P,SR, 0.8, 0.8)).
+query(placement(C,P,SR, 0.99, 0.8)).
 
 placement(Chain, Placement, ServiceRoutes, THw, TQoS) :-
     chain(Chain, Services),
