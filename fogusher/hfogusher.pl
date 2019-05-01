@@ -1,8 +1,8 @@
 :- use_module(library(lists)).
-:- consult('newchain').
-:- consult('infra/extended').
+:- consult('newchain2').
+:- consult('infra/complete').
 
-query(placement(C,P,SR, 0.99, 0.8)).
+query(placement(ucdavis_cctv, [on(cctv_driver1,X), on(feature_extr1,Y), on(lightweight_analytics1,Z), on(alarm_driver1, W), on(cctv_driver,parkingServices), on(feature_extr,studentCenter), on(lightweight_analytics,isp), on(alarm_driver,firePolice), on(wan_optimiser,isp), on(storage,cloud), on(video_analytics,cloud)],R, 0.8, 0.8)).
 
 placement(Chain, Placement, ServiceRoutes, THw, TQoS) :-
     chain(Chain, Services),
