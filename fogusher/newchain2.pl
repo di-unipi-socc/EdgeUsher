@@ -38,8 +38,11 @@ flow(lightweight_analytics1, alarm_driver1, 1).
 
 
 flow(feature_extr, wan_optimiser, 15).
-flow(wan_optimiser, storage, 10). 
-flow(storage, video_analytics, 10).
+flow(feature_extr1, wan_optimiser, 15).
+
+
+flow(wan_optimiser, storage, 20). 
+flow(storage, video_analytics, 20).
    
 maxLatency([cctv_driver1, feature_extr1, lightweight_analytics1, alarm_driver1], 150).
 

@@ -1,8 +1,8 @@
 :- use_module(library(lists)).
 :- consult('newchain2').
-:- consult('infra/extended').
+:- consult('infra/complete').
 
-query(placement(Chain, Placement, ServiceRoutes)).
+%query(placement(Chain, Placement, ServiceRoutes)).
 
 placement(Chain, Placement, ServiceRoutes) :-
     chain(Chain, Services),
