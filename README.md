@@ -84,7 +84,7 @@ There exist two versions of EdgeUsher:
 - [edgeusher.pl](https://github.com/di-unipi-socc/EdgeUsher/blob/master/edgeusher.pl), which performs an exhaustive search for all eligible placemnents of a VNF chain to an Edge/Cloud infrastructure,
 - [hedgeusher.pl](https://github.com/di-unipi-socc/EdgeUsher/blob/master/hedgeusher.pl), which prunes the search space through heuristics and only returns a subset of the optimal solutions.
 
-After downloading the repo, one should create the a main.pl file in the root folder and consult the EdgeUsher version of choice as in:
+After downloading the repo, one should create the a ```main.pl``` file in the root folder and consult the EdgeUsher version of choice as in:
 
 ```prolog
 :- use_module('edgeusher'). % exhaustive search
