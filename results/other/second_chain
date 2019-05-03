@@ -1,0 +1,1 @@
+placement(ucdavis_cctv,[on(cctv_driver,X8), on(feature_extr,X9), on(lightweight_analytics,X10), on(alarm_driver,X11), on(wan_optimiser,X12), on(storage,X13), on(video_analytics,X13)],X14,0.8,0.8):	0         
