@@ -4,10 +4,10 @@
 
 #### VNF Chains
 
-EdgeUsher permits to easily specify chains of virtual network service functions and their hardware, IoT, network QoS and security requirements. Indeed, a VNF chain -- identified by a  ```ChainID``` and composed of a list of ```ServiceFunctions``` -- can be declared as
+EdgeUsher permits to easily specify chains of virtual network service functions and their hardware, IoT, network QoS and security requirements. Indeed, a VNF chain -- identified by a  ```ChainID``` and composed of a list of ```ServiceFunctionIDs``` -- can be declared as
 
 ```prolog
-chain(ChainID, ServiceFunctions).
+chain(ChainID, ServiceFunctionIDs).
 ```
 
 The requirements of each service function ```F``` composing the chain can be declared as in
@@ -31,6 +31,10 @@ Finally, constraints on maximum tolerated latency for (directed) service paths c
 maxLatency([F1, F2, ...,FN], MaxLatency).
 ```
 
-As an example, an instance of the chain below, which insists on a single CCTV system (```video1```) and on a single alarm system (``` alarm1```), can be declared as in chain.pl.
+As an example, an instance of the chain below, which insists on a single CCTV system (```video1```) and on a single alarm system (```alarm1```), can be declared as in chain.pl.
+
+<center>
+<img src="https://raw.githubusercontent.com/di-unipi-socc/EdgeUsher/master/img/cctv.png?raw=true" alt="Home Screen" width="800" />
+</center>
 
 
