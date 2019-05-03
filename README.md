@@ -31,10 +31,36 @@ Finally, constraints on maximum tolerated latency for (directed) service paths c
 maxLatency([F1, F2, ...,FN], MaxLatency).
 ```
 
-As an example, an instance of the chain below, which insists on a single CCTV system (```video1```) and on a single alarm system (```alarm1```), can be declared as in chain.pl.
+As an example, an instance of the chain below, which insists on a single CCTV system (```video1```) and on a single alarm system (```alarm1```), can be declared as in [chain.pl](https://github.com/di-unipi-socc/EdgeUsher/blob/master/chains/chain.pl).
 
 <center>
-<img src="https://raw.githubusercontent.com/di-unipi-socc/EdgeUsher/master/img/cctv.png?raw=true" alt="Home Screen" width="800" />
+<img src="https://raw.githubusercontent.com/di-unipi-socc/EdgeUsher/master/img/cctv.png" alt="Home Screen" width="800" />
+</center>
+
+#### Infrastructures
+
+EdgeUsher permits to easily specify an infrastructure and its probabilistic dynamics. An infrastructure is modelled as a graph composed by nodes and links. A (Cloud or Edge) node identified by a certain ```NodeId``` can be declared as
+
+```prolog
+node(NodeId, HWCaps, IoTCaps, SecCaps).
+```
+
+where ```HWCaps``` is the available hardware capacity of that node, ```IoTCaps``` is the list of  IoT devices that the node reaches out directly, and ```SecProps``` is the list of the security capabilities it features. 
+
+On the other hand, a (point-to-point or end-to-end) link connecting ```NodeA``` to ```NodeB``` which is available in the considered infrastructure can be declared as
+
+```prolog
+link(NodeA, NodeB, Latency, Bandwidth).
+```
+
+where ```Latency``` is the latency experienced over the link (in ms) and ```Bandwidth``` is the transmission capacity it offers (in Mbps). 
+
+EdgeUsher also permits to naturally specify probabilistic profiles of both nodes and links by exploiting ProbLog _annotated disjunctions_. 
+
+As an example, a portion of the UC Davis edge infrastructure, inspired from [(Ning et al., 2019)](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8594705), can be declared as in [complete.pl](https://github.com/di-unipi-socc/EdgeUsher/blob/master/infra/complete.pl).
+
+<center>
+<img src="https://github.com/di-unipi-socc/EdgeUsher/blob/master/img/ucdavis.png?raw=true" alt="Home Screen" width="800" />
 </center>
 
 
