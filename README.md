@@ -129,7 +129,7 @@ Additionally, users can specify partial deployments and/or routes, and use \prot
 All the described functionalities work also with the heuristic version of the prototype, which can be queried as
 
 ```prolog
-placement(Chain, Placement, Routes, ThrHW, ThrQoS).
+query(placement(Chain, Placement, Routes, ThrHW, ThrQoS)).
 ```
 
 by specifying two threshold values, ```ThrHW``` and ```ThrQoS```, that are used to cut the search space whenever the probability of satisfying the chain hardware or QoS requirements, respectively, falls below them.
