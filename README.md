@@ -1,6 +1,6 @@
 # EdgeUsher
 
-EdgeUsher is a simple, yet general, probabilistic declarative methodology and a (heuristic) backtracking strategy to model and solve the \textit{VNF placement} problem in Cloud-Edge computing scenarios. EdgeUsher has been prototyped by means of the probabilistic logic programming language [ProbLog](https://dtai.cs.kuleuven.be/problog/index.html). 
+EdgeUsher is a simple, yet general, probabilistic declarative methodology and a (heuristic) backtracking strategy to model and solve the _VNF placement problem_ in Cloud-Edge computing scenarios. EdgeUsher has been prototyped by means of the probabilistic logic programming language [ProbLog](https://dtai.cs.kuleuven.be/problog/index.html). 
 
 It inputs:
 
