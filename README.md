@@ -73,7 +73,7 @@ EdgeUsher also permits to naturally specify probabilistic profiles of both nodes
 As an example, a portion of the UC Davis edge infrastructure, inspired from [(Ning et al., 2019)](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8594705), can be declared as in [complete.pl](https://github.com/di-unipi-socc/EdgeUsher/blob/master/infra/complete.pl).
 
 <center>
-<img src="https://github.com/di-unipi-socc/EdgeUsher/blob/master/img/ucdavis.png?raw=true" alt="Home Screen" width="800" />
+<img src="https://github.com/di-unipi-socc/EdgeUsher/blob/master/img/ucdavis.png?raw=true" alt="Home Screen" width="650" />
 </center>
 
 
