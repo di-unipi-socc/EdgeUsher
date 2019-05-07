@@ -87,8 +87,8 @@ There exist two versions of EdgeUsher:
 After downloading the repo, one should create the a ```main.pl``` file in the root folder and consult the EdgeUsher version of choice as in:
 
 ```prolog
-:- use_module('edgeusher'). % exhaustive search
-:- use_module('hedgeusher'). %heuristic search
+:- consult('edgeusher'). % exhaustive search
+:- consult('hedgeusher'). % heuristic search
 ```
 
 After specifying an input chain and an Edge infrastructure, EdgeUsher can be used to determine all eligible service function placements and flow routings by simply issuing the query:
