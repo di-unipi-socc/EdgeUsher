@@ -11,6 +11,14 @@ It inputs:
 
 Based on those, EdgeUsher outputs a ranking of all eligible placements for the VNF chains and routing paths for the related traffic flows over the available Edge-Cloud infrastructure. The ranking considers how well a certain placement can satisfy the chain requirements as the infrastructure state (probabilistically) varies.
 
+EdgeUsher methodology is described in the following technical report:
+
+> [Antonio Brogi](http://pages.di.unipi.it/brogi), [Stefano Forti](http://pages.di.unipi.it/forti), [Federica Paganelli](http://lrst.dinfo.unifi.it/people/Paganelli/)<br>
+> **Probabilistic QoS-aware Placement of VNF chains at the Edge**, <br>	
+> arXiv: \[xyzw\], arXiv Pre-print, 2019.
+
+If you wish to reuse source code in this repo, please consider citing the above mentioned article.
+
 In the following, we briefly present the model used by EdgeUsher and how it is possible to use it.
 
 ### Model
