@@ -22,11 +22,13 @@ servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW) :-
 
 thingReqsOK(T_Reqs, T_Caps) :- subset(T_Reqs, T_Caps).
 
+secReqsOK([], []).
 secReqsOK([SR|SRs], Sec_Caps) :- subset([SR|SRs], Sec_Caps).
 secReqsOK(and(P1,P2), Sec_Caps) :- secReqsOK(P1, Sec_Caps), secReqsOK(P2, Sec_Caps).
 secReqsOK(or(P1,P2), Sec_Caps) :- secReqsOK(P1, Sec_Caps); secReqsOK(P2, Sec_Caps).
 secReqsOK(P, Sec_Caps) :- atom(P), member(P, Sec_Caps).
 
+hwReqsOK([], []).
 hwReqsOK(HW_Reqs, _, N, [], [(N,HW_Reqs)]).
 hwReqsOK(HW_Reqs, HW_Caps, N, [(N,A)|As], [(N,NewA)|As]) :-
     HW_Reqs + A =< HW_Caps, NewA is A + HW_Reqs.
