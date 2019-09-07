@@ -130,7 +130,7 @@ query(placement(Chain,
       [on(F1,N1), on(F2,N2), on(F3,N3)], Routes),
       N2 \== N3).
 ```
-stating that ```F2``` and ```F2``` must be mapped on two different nodes ```N2``` and ```N3```.
+stating that ```F2``` and ```F3``` must be mapped on two different nodes ```N2``` and ```N3```.
 
 Additionally, users can specify partial deployments and/or routes, and use \prototype to complete them. This is useful to quickly determine on-demand re-configurations of a chain in case of infrastructure failures or malfunctioning (e.g., crash of a node currently supporting a function service). Also, users can run EdgeUsher over complete deployments and/or routes -- e.g. among those already enacted or obtained via other tools -- so to instantaneously assess them against varying infrastructure conditions. 
 
