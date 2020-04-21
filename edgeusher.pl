@@ -2,11 +2,8 @@
 
 placement(Chain, Placement, ServiceRoutes) :-
     chain(Chain, Services),
-    servicePlacement(Services, Placement),
+    servicePlacement(Services, Placement, []),
     flowPlacement(Placement, ServiceRoutes).
-
-servicePlacement(Services, Placement) :-
-    servicePlacement(Services, Placement, []).
 
 servicePlacement([], [], _).
 servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW) :-

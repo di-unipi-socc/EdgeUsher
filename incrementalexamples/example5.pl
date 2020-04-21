@@ -1,11 +1,10 @@
 :- use_module(library(lists)).
 
-placement(Chain, Placement, ServiceRoutes, THw, TQoS) :-
+placement(Chain, Placement, ServiceRoutes) :-
     chain(Chain, Services),
-    subquery(servicePlacement(Services, Placement, []), PHw),
-    PHw >= THw,
-    flowPlacement(Placement, ServiceRoutes, TQoS).
-    
+    servicePlacement(Services, Placement, []),
+    flowPlacement(Placement, ServiceRoutes).
+
 servicePlacement([], [], _).
 servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW) :-
     service(S, _, HW_Reqs, Thing_Reqs, Sec_Reqs),
@@ -18,6 +17,7 @@ servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW) :-
 
 thingReqsOK(T_Reqs, T_Caps) :- subset(T_Reqs, T_Caps).
 
+secReqsOK([],_).
 secReqsOK([SR|SRs], Sec_Caps) :- subset([SR|SRs], Sec_Caps).
 secReqsOK(and(P1,P2), Sec_Caps) :- secReqsOK(P1, Sec_Caps), secReqsOK(P2, Sec_Caps).
 secReqsOK(or(P1,P2), Sec_Caps) :- secReqsOK(P1, Sec_Caps); secReqsOK(P2, Sec_Caps).
@@ -29,23 +29,22 @@ hwReqsOK(HW_Reqs, HW_Caps, N, [(N,A)|As], [(N,NewA)|As]) :-
 hwReqsOK(HW_Reqs, HW_Caps, N, [(N1,A1)|As], [(N1,A1)|NewAs]) :-
     N \== N1, hwReqsOK(HW_Reqs, HW_Caps, N, As, NewAs).
 
-flowPlacement(Placement, ServiceRoutes, TQoS) :-
+flowPlacement(Placement, ServiceRoutes) :-
     findall(flow(S1, S2, Br), flow(S1, S2, Br), ServiceFlows),
-    flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, [], S2S_latencies, TQoS),
+    flowPlacement(ServiceFlows, Placement, [], ServiceRoutes, [], S2S_latencies),
     maxLatency(LChain, RequiredLatency),   %hp: only one maxLatency def
     latencyOK(LChain, RequiredLatency, S2S_latencies).
 
-flowPlacement([], _, SRs, SRs, Lats, Lats, TQoS).
-flowPlacement([flow(S1, S2, _)|SFs], P, SRs, NewSRs, Lats, NewLats, TQoS) :-
+flowPlacement([], _, SRs, SRs, Lats, Lats).
+flowPlacement([flow(S1, S2, _)|SFs], P, SRs, NewSRs, Lats, NewLats) :-
         subset([on(S1,N), on(S2,N)], P),
-        flowPlacement(SFs, P, SRs, NewSRs, [(S1,S2,0)|Lats], NewLats, TQoS). 
-flowPlacement([flow(S1, S2, Br)|SFs], P, SRs, NewSRs, Lats, NewLats, TQoS) :-
+        flowPlacement(SFs, P, SRs, NewSRs, [(S1,S2,0)|Lats], NewLats). 
+flowPlacement([flow(S1, S2, Br)|SFs], P, SRs, NewSRs, Lats, NewLats) :-
         subset([on(S1,N1), on(S2,N2)], P),
         N1 \== N2,
-        subquery(path(N1, N2, 2, [], Path, 0, Lat), PQoS),
-        PQoS >= TQoS,
+        path(N1, N2, 2, [], Path, 0, Lat),
         update(Path, Br, S1, S2, SRs, SR2s),
-        flowPlacement(SFs, P, SR2s, NewSRs, [(S1,S2,Lat)|Lats], NewLats, TQoS). 
+        flowPlacement(SFs, P, SR2s, NewSRs, [(S1,S2,Lat)|Lats], NewLats). 
 
  path(N1, N2, Radius, Path, [(N1, N2, Bf)|Path], Lat, NewLat) :-
     Radius > 0,
@@ -84,3 +83,30 @@ chainLatency([S1,S2|LChain], S2S_latencies, Latency, NewLatency) :-
     service(S1, S1_Service_Time, _, _, _),
     Latency2 is Latency+S1_Service_Time+Lf,
     chainLatency([S2|LChain], S2S_latencies, Latency2, NewLatency).
+
+chain(ucdavis_cctv, [cctv_driver, feature_extr, lw_analytics]).
+
+service(cctv_driver, 2, 1, [ video1 ], or(anti_tampering,access_control)).
+service(feature_extr, 5, 3, [], and(access_control, or(obfuscated_storage, encrypted_storage))). 
+service(lw_analytics, 10, 5, [], and(access_control, and(host_IDS, or(obfuscated_storage,encrypted_storage)))).
+
+flow(cctv_driver, feature_extr, 15).                        
+flow(feature_extr, lw_analytics, 8).
+maxLatency([cctv_driver, feature_extr, lw_analytics], 50).
+
+node(parkingServices, 1, [video1], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
+node(westEntry, 1, [], [authentication, anti_tampering,wireless_security,obfuscated_storage]).
+node(lifeSciences, 4, [video4], [access_logs, authentication, access_control, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+node(firePolice, 8, [video2, alarm1], [access_logs, access_control, authentication, backup,resource_monitoring, iot_data_encryption, firewall, host_IDS, pki, wireless_security, encrypted_storage]).
+
+link(parkingServices, westEntry, 15, 70).
+link(parkingServices, lifeSciences, 15, 70).
+
+link(westEntry, parkingServices, 15, 70).
+link(westEntry, firePolice, 15, 70).
+
+link(firePolice, westEntry, 15, 70).
+
+link(lifeSciences, parkingServices, 15, 70).
+
+query(placement(C,P,R)).
