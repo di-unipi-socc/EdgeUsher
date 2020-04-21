@@ -17,6 +17,7 @@ servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW) :-
 
 thingReqsOK(T_Reqs, T_Caps) :- subset(T_Reqs, T_Caps).
 
+secReqsOK([],_).
 secReqsOK([SR|SRs], Sec_Caps) :- subset([SR|SRs], Sec_Caps).
 secReqsOK(and(P1,P2), Sec_Caps) :- secReqsOK(P1, Sec_Caps), secReqsOK(P2, Sec_Caps).
 secReqsOK(or(P1,P2), Sec_Caps) :- secReqsOK(P1, Sec_Caps); secReqsOK(P2, Sec_Caps).
