@@ -2,14 +2,11 @@
 
 placement(Chain, Placement, ServiceRoutes, THw, TQoS) :-
     chain(Chain, Services),
-    subquery(servicePlacement(Services, Placement), PHw),
+    subquery(servicePlacement(Services, Placement, []), PHw),
     PHw >= THw,
     flowPlacement(Placement, ServiceRoutes, TQoS).
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-servicePlacement(Services, Placement) :-
-    servicePlacement(Services, Placement, []).
-
 servicePlacement([], [], _).
 servicePlacement([S|Ss], [on(S,N)|P], AllocatedHW) :-
     service(S, _, HW_Reqs, Thing_Reqs, Sec_Reqs),
