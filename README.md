@@ -141,3 +141,12 @@ query(placement(Chain, Placement, Routes, ThrHW, ThrQoS)).
 ```
 
 by specifying two threshold values, ```ThrHW``` and ```ThrQoS```, that are used to cut the search space whenever the probability of satisfying the chain hardware or QoS requirements, respectively, falls below them.
+
+# Collaborate
+
+We look forward to contributions and suggestions on how to improve EdgeUsher.
+Feel free to drop us a message or a pull request!
+
+### Lead Developers
+
+[Antonio Brogi](https://pages.di.unipi.it/brogi) and [Stefano Forti](https://pages.di.unipi.it/forti)
