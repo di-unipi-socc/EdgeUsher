@@ -13,9 +13,9 @@ Based on those, EdgeUsher outputs a ranking of all eligible placements for the V
 
 EdgeUsher methodology is described in the following technical report:
 
-> [Antonio Brogi](http://pages.di.unipi.it/brogi), [Stefano Forti](http://pages.di.unipi.it/forti), [Federica Paganelli](http://lrst.dinfo.unifi.it/people/Paganelli/)<br>
+> [Stefano Forti](http://pages.di.unipi.it/forti), [Federica Paganelli](http://lrst.dinfo.unifi.it/people/Paganelli/), [Antonio Brogi](http://pages.di.unipi.it/brogi)<br>
 > [**Probabilistic QoS-aware Placement of VNF chains at the Edge**](https://arxiv.org/abs/1906.00197), <br>	
-> arXiv:1906.00197  \[cs.NI\], arXiv Pre-print, 2019.
+> Theory and Practice of Logic Programming, 2021.
 
 If you wish to reuse source code in this repo, please consider citing the above mentioned article.
 
